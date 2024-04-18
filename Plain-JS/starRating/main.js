@@ -13,35 +13,79 @@ const allRatingsData = [
 class StarRating {
   #rootElement = document.querySelector("#root");
   #rating = 0;
+  #tempRating = 0;
 
   constructor() {
+    this.#clear();
+    this.#createMarkup();
+  }
+
+  #createMarkup() {
     const markup = this.#generateMarkup();
     this.#rootElement.insertAdjacentHTML("beforeend", markup);
   }
 
-  addHandlerClick() {
-    this.#rootElement.addEventListener(
-      "click",
-      function (e) {
-        console.log(e.target);
+  #clear() {
+    this.#rootElement.innerHTML = "";
+  }
 
-        if (e.target.closest("svg")) {
-          const rating = JSON.parse(e.target.closest("span").dataset.rate);
-          // console.log(e.target.closest("span"));
-          console.log(rating);
-          if (hasPointedHalf(e)) {
-            this.#rating = Number(rating.half);
-          } else {
-            console.log(e.target.closest("span"));
-            this.#rating = Number(rating.full);
-          }
-          console.log(this.#rating);
-          this.#rootElement.innerHTML = "";
-          const markup = this.#generateMarkup();
-          this.#rootElement.insertAdjacentHTML("beforeend", markup);
-        }
-      }.bind(this)
-    );
+  handleClick = (e) => {
+    console.log(e);
+    // this.#rootElement.removeEventListener(
+    //   "mouseover",
+    //   this.handleMouseOver
+    // );
+
+    if (e.target.closest("svg")) {
+      const rating = JSON.parse(e.target.closest("span").dataset.rate);
+      if (hasPointedHalf(e)) {
+        this.#rating = Number(rating.half);
+      } else {
+        this.#rating = Number(rating.full);
+      }
+
+      this.#tempRating = 0;
+      this.#clear();
+      this.#createMarkup();
+    }
+  };
+
+  addHandlerClick() {
+    this.#rootElement.addEventListener("click", this.handleClick);
+  }
+
+  handleMouseOver = (e) => {
+    if (e.target.closest("svg")) {
+      console.log(e);
+      const ratingObj = JSON.parse(e.target.closest("span").dataset.rate);
+      console.log(ratingObj);
+
+      if (hasPointedHalf(e)) this.#tempRating = Number(ratingObj.half);
+      else this.#tempRating = Number(ratingObj.full);
+
+      // this.#clear();
+      // const markup = allRatingsData
+      //   .map(this.#generateStarMarkup.bind(this))
+      //   .join("");
+      // document.querySelector(".stars").innerHTML = "";
+
+      // this.#createMarkup();
+      // this.#rootElement.addEventListener("click", this.handleClick);
+    }
+  };
+
+  addHandlerMouseEnter() {
+    this.#rootElement.addEventListener("mouseover", this.handleMouseOver);
+  }
+
+  addHandlerMouseLeave() {
+    this.#rootElement.addEventListener("mouseout", (e) => {
+      this.#tempRating = 0;
+      console.log(111);
+
+      this.#clear();
+      this.#createMarkup();
+    });
   }
 
   #generateMarkup() {
@@ -50,22 +94,34 @@ class StarRating {
 				<div class="stars">${allRatingsData
           .map(this.#generateStarMarkup.bind(this))
           .join("")}</div>
-				<p class="text">You rated this: ${this.#rating} stars!!!</p>
+				<p class="text">You rated this: ${this.#tempRating || this.#rating} stars!!!</p>
 			</div>
 		`;
   }
 
   #generateStarMarkup(rate) {
-    console.log(rate);
+    // console.log(rate);
     return `
 			<span role='button' data-rate=${JSON.stringify(rate)}>
-        ${this.#rating === rate.half ? starHalf : ""}
-        ${this.#rating >= rate.full ? starFull : ""}
-        ${this.#rating !== rate.half && this.#rating < rate.full ? star : ""}
+       ${
+         this.#tempRating
+           ? this.#displayStars(this.#tempRating, rate)
+           : this.#displayStars(this.#rating, rate)
+       }
 			</span>
 		`;
+  }
+
+  #displayStars(rating, rate) {
+    return `
+      ${rating === rate.half ? starHalf : ""}
+      ${rating >= rate.full ? starFull : ""}
+      ${rating !== rate.half && rating < rate.full ? star : ""}
+    `;
   }
 }
 
 const starRatingComponent = new StarRating();
 starRatingComponent.addHandlerClick();
+starRatingComponent.addHandlerMouseEnter();
+starRatingComponent.addHandlerMouseLeave();
