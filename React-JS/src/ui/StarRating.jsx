@@ -11,9 +11,9 @@ const allRatingsData = [
 ];
 
 export default function StarRating() {
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(4.5);
   const [tempRating, setTempRating] = useState(0);
-
+  console.log(rating, tempRating);
   function handleRatingChange(rate) {
     setRating(rate);
   }
@@ -56,6 +56,7 @@ function Star({
   onTempRatingOut,
 }) {
   function handleClick(e) {
+    console.log(e.target, 1111);
     if (hasPointedHalf(e)) onRatingChange(rate.half);
     else onRatingChange(rate.full);
   }
@@ -69,8 +70,8 @@ function Star({
     <span
       role="button"
       style={{ width: "20px", height: "20px", display: "block" }}
-      onMouseMove={handleHover}
-      onMouseOut={onTempRatingOut}
+      onMouseEnter={handleHover}
+      onMouseLeave={onTempRatingOut}
       onClick={handleClick}
     >
       {tempRating ? (
