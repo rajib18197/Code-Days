@@ -1,5 +1,14 @@
 import { useState } from "react";
 import { FaRegStar, FaRegStarHalfStroke, FaStar } from "react-icons/fa6";
+import { hasPointedHalf } from "../utils/helpers";
+
+const allRatingsData = [
+  { half: 0.5, full: 1 },
+  { half: 1.5, full: 2 },
+  { half: 2.5, full: 3 },
+  { half: 3.5, full: 4 },
+  { half: 4.5, full: 5 },
+];
 
 export default function StarRating() {
   const [rating, setRating] = useState(0);
@@ -16,14 +25,15 @@ export default function StarRating() {
   return (
     <div className="flex gap-8 items-center bg-gray-900 text-gray-100 p-2 rounded max-w-[500px] h-[50px] mx-auto">
       <div className="flex gap-2 items-center">
-        {Array.from({ length: 5 }, (_, i) => (
+        {allRatingsData.map((rate, i) => (
           <Star
             key={i}
             starNumber={i + 1}
+            rate={rate}
             rating={rating}
-            onRatingChange={() => handleRatingChange(i + 1)}
+            onRatingChange={handleRatingChange}
             tempRating={tempRating}
-            onTempRatingMove={() => handleTempRatingChange(i + 1)}
+            onTempRatingMove={handleTempRatingChange}
             onTempRatingOut={() => handleTempRatingChange(0)}
           />
         ))}
@@ -38,30 +48,72 @@ export default function StarRating() {
 
 function Star({
   starNumber,
+  rate,
   rating,
   onRatingChange,
   tempRating,
   onTempRatingMove,
   onTempRatingOut,
 }) {
+  function handleClick(e) {
+    if (hasPointedHalf(e)) onRatingChange(rate.half);
+    else onRatingChange(rate.full);
+  }
+
+  function handleHover(e) {
+    if (hasPointedHalf(e)) onTempRatingMove(rate.half);
+    else onTempRatingMove(rate.full);
+  }
+
   return (
     <span
       role="button"
-      onMouseMove={onTempRatingMove}
+      style={{ width: "20px", height: "20px", display: "block" }}
+      onMouseMove={handleHover}
       onMouseOut={onTempRatingOut}
-      onClick={onRatingChange}
+      onClick={handleClick}
     >
       {tempRating ? (
+        <DisplayRating rating={tempRating} rate={rate} />
+      ) : (
+        <DisplayRating rating={rating} rate={rate} />
+      )}
+
+      {/* {tempRating ? (
         starNumber <= tempRating ? (
-          <FaStar />
+          <FaStar style={{ width: "100%", height: "100%", display: "block" }} />
         ) : (
-          <FaRegStar />
+          <FaRegStar
+            style={{ width: "100%", height: "100%", display: "block" }}
+          />
         )
       ) : starNumber <= rating ? (
-        <FaStar />
+        <FaStar style={{ width: "100%", height: "100%", display: "block" }} />
       ) : (
-        <FaRegStar />
-      )}
+        <FaRegStar
+          style={{ width: "100%", height: "100%", display: "block" }}
+        />
+      )} */}
     </span>
+  );
+}
+
+function DisplayRating({ rating, rate }) {
+  return (
+    <>
+      {rating === rate.half && (
+        <FaRegStarHalfStroke
+          style={{ width: "100%", height: "100%", display: "block" }}
+        />
+      )}
+      {rating >= rate.full && (
+        <FaStar style={{ width: "100%", height: "100%", display: "block" }} />
+      )}
+      {rating !== rate.half && rating < rate.full && (
+        <FaRegStar
+          style={{ width: "100%", height: "100%", display: "block" }}
+        />
+      )}
+    </>
   );
 }
