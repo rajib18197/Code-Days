@@ -8,7 +8,7 @@ const rightautoCompleteRootElement = document.querySelector(
   ".right-autocomplete"
 );
 
-const configObj = {
+const configOptions = {
   apiService: async (value) => await getMoviesData({ searchTerm: value }),
 
   renderOptionMarkup(movie) {
@@ -30,7 +30,7 @@ const configObj = {
 
 const controlAutoComplete = function () {
   new AutoCompleteSearchView({
-    ...configObj,
+    ...configOptions,
     rootElement: leftautoCompleteRootElement,
     async onOptionSelection(id) {
       const movieSummaryData = await getMoviesData({ imdbId: id });
@@ -42,7 +42,7 @@ const controlAutoComplete = function () {
   });
 
   new AutoCompleteSearchView({
-    ...configObj,
+    ...configOptions,
     rootElement: rightautoCompleteRootElement,
     async onOptionSelection(id) {
       const movieSummaryData = await getMoviesData({ imdbId: id });

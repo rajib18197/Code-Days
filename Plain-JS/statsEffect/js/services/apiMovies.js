@@ -26,18 +26,4 @@ export async function getMoviesData({ searchTerm, imdbId }) {
   return searchTerm ? data.Search : data;
 }
 
-// Poster
-// :
-// "https://m.media-amazon.com/images/M/MV5BNDYxNjQyMjAtNTdiOS00NGYwLWFmNTAtNThmYjU5ZGI2YTI1XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg"
-// Title
-// :
-// "The Avengers"
-// Type
-// :
-// "movie"
-// Year
-// :
-// "2012"
-// imdbID
-// :
-// "tt0848228"
+// Poster, Title, Type, Year, imdbID
