@@ -22,6 +22,10 @@ const controlAutoComplete = function () {
       return movie.imdbID;
     },
 
+    setSelectedOptions(movie) {
+      return { key: movie.imdbID, value: movie.Title };
+    },
+
     inputValue(movie) {
       return movie.Title;
     },
@@ -31,7 +35,7 @@ const controlAutoComplete = function () {
       const summaryMarkup = generateMovieSummaryMarkup(movieSummaryData);
       document
         .querySelector(".left-summary")
-        .insertAdjacentHTML("beforend", summaryMarkup);
+        .insertAdjacentHTML("beforeend", summaryMarkup);
     },
   });
 
@@ -49,16 +53,16 @@ const controlAutoComplete = function () {
       return movie.imdbID;
     },
 
-    inputValue(movie) {
-      return movie.Title;
+    setSelectedOptions(movie) {
+      return { key: movie.imdbID, value: movie.Title };
     },
 
     async onOptionSelection(id) {
       const movieSummaryData = await getMoviesData({ imdbId: id });
       const summaryMarkup = generateMovieSummaryMarkup(movieSummaryData);
       document
-        .querySelector(".left-summary")
-        .insertAdjacentHTML("beforend", summaryMarkup);
+        .querySelector(".right-summary")
+        .insertAdjacentHTML("beforeend", summaryMarkup);
     },
   });
 };
@@ -72,10 +76,14 @@ function generateMovieItemMarkup(movie) {
 
 function generateMovieSummaryMarkup(movieSummaryData) {
   return `
-		<img src="" alt="">
-		<p></p>
-		<p></p>
-		<p></p>
+		<img src="${movieSummaryData.Poster}" alt="">
+		<p>${movieSummaryData.Title}</p>
+		<p>${movieSummaryData.Plot}</p>
+		<p>Imdb Rating: ${movieSummaryData.imdbRating}, Release Year: ${movieSummaryData.Year}</p>
+		<p>Actors: ${movieSummaryData.Actors}, Director: ${movieSummaryData.Director}</p>
+		<p>Awards: ${movieSummaryData.Awards}</p>
+		<p>Income: ${movieSummaryData.BoxOffice}</p>
+		<p>Votes: ${movieSummaryData.imdbVotes}</p>
 		`;
 }
 

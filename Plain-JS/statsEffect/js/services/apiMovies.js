@@ -23,7 +23,7 @@ export async function getMoviesData({ searchTerm, imdbId }) {
 
   console.log(data);
 
-  return data.Search;
+  return searchTerm ? data.Search : data;
 }
 
 // Poster

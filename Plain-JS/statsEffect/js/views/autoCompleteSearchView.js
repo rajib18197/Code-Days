@@ -9,6 +9,7 @@ export default class AutoCompleteSearchView {
     renderOptionMarkup,
     itemDatasetValue,
     inputValue,
+    setSelectedOptions,
     onOptionSelection,
   }) {
     this.data = {
@@ -17,6 +18,7 @@ export default class AutoCompleteSearchView {
       renderOptionMarkup,
       itemDatasetValue,
       inputValue,
+      setSelectedOptions,
       onOptionSelection,
     };
 
@@ -53,9 +55,13 @@ export default class AutoCompleteSearchView {
   async #handleInputChange(e) {
     const data = await this.data.apiService(e.target.value);
     this.showDropdown();
+    const selectedOptions = {};
 
     const optionMarkup = data
       .map((item) => {
+        const optionObj = this.data.setSelectedOptions(item);
+        selectedOptions[optionObj.key] = optionObj.value;
+
         const value = this.data.itemDatasetValue(item);
         const optionMarkup = this.data.renderOptionMarkup(item);
         const markup = `
@@ -69,14 +75,13 @@ export default class AutoCompleteSearchView {
       .querySelector(".dropdown__menu")
       .insertAdjacentHTML("beforeend", optionMarkup);
 
-    this.data.rootElement.addEventListener("click", function (e) {
+    this.data.rootElement.addEventListener("click", (e) => {
       if (e.target.closest(".dropdown__item")) {
         this.closeDropdown();
-
         const selectedValue = e.target.closest(".dropdown__item").dataset.value;
 
         this.data.rootElement.querySelector("#search").value =
-          this.data.inputValue(item);
+          selectedOptions[selectedValue];
 
         this.data.onOptionSelection(selectedValue);
       }
