@@ -35,6 +35,7 @@ const controlAutoComplete = function () {
     },
   });
 
+  // 2nd
   new AutoCompleteSearchView({
     rootElement: rightautoCompleteRootElement,
 
