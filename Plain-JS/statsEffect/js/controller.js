@@ -1,5 +1,4 @@
 import { getMoviesData } from "./services/apiMovies.js";
-import SearchView from "./views/SearchView.js";
 import AutoCompleteSearchView from "./views/autoCompleteSearchView.js";
 
 const leftautoCompleteRootElement =
@@ -10,8 +9,6 @@ const rightautoCompleteRootElement = document.querySelector(
 );
 
 const controlAutoComplete = function () {
-  // const leftSearchView = new SearchView();
-
   new AutoCompleteSearchView({
     rootElement: leftautoCompleteRootElement,
 
