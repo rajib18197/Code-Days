@@ -8,7 +8,6 @@ export async function getMoviesData({ searchTerm, imdbId }) {
   if (imdbId) url += `&i=${imdbId}`;
 
   const response = await fetch(url);
-  console.log(response);
 
   if (!response.ok) {
     console.log("Error");

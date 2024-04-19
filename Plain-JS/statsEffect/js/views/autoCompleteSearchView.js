@@ -43,9 +43,6 @@ export default class AutoCompleteSearchView {
 
   closeDropdownOutside() {
     document.addEventListener("click", (e) => {
-      console.log(e.target);
-      console.log(this.data.rootElement);
-      console.log(e.target.contains(this.data.rootElement));
       if (!e.target.contains(this.data.rootElement)) {
         this.closeDropdown();
       }
@@ -55,6 +52,7 @@ export default class AutoCompleteSearchView {
   async #handleInputChange(e) {
     const data = await this.data.apiService(e.target.value);
     this.showDropdown();
+
     const selectedOptions = {};
 
     const optionMarkup = data
