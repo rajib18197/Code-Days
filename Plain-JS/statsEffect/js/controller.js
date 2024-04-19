@@ -8,28 +8,30 @@ const rightautoCompleteRootElement = document.querySelector(
   ".right-autocomplete"
 );
 
+const configObj = {
+  apiService: async (value) => await getMoviesData({ searchTerm: value }),
+
+  renderOptionMarkup(movie) {
+    return generateMovieItemMarkup(movie);
+  },
+
+  itemDatasetValue(movie) {
+    return movie.imdbID;
+  },
+
+  setSelectedOptions(movie) {
+    return { key: movie.imdbID, value: movie.Title };
+  },
+
+  inputValue(movie) {
+    return movie.Title;
+  },
+};
+
 const controlAutoComplete = function () {
   new AutoCompleteSearchView({
+    ...configObj,
     rootElement: leftautoCompleteRootElement,
-
-    apiService: async (value) => await getMoviesData({ searchTerm: value }),
-
-    renderOptionMarkup(movie) {
-      return generateMovieItemMarkup(movie);
-    },
-
-    itemDatasetValue(movie) {
-      return movie.imdbID;
-    },
-
-    setSelectedOptions(movie) {
-      return { key: movie.imdbID, value: movie.Title };
-    },
-
-    inputValue(movie) {
-      return movie.Title;
-    },
-
     async onOptionSelection(id) {
       const movieSummaryData = await getMoviesData({ imdbId: id });
       const summaryMarkup = generateMovieSummaryMarkup(movieSummaryData);
@@ -39,24 +41,9 @@ const controlAutoComplete = function () {
     },
   });
 
-  // 2nd
   new AutoCompleteSearchView({
+    ...configObj,
     rootElement: rightautoCompleteRootElement,
-
-    apiService: async (value) => await getMoviesData({ searchTerm: value }),
-
-    renderOptionMarkup(movie) {
-      return generateMovieItemMarkup(movie);
-    },
-
-    itemDatasetValue(movie) {
-      return movie.imdbID;
-    },
-
-    setSelectedOptions(movie) {
-      return { key: movie.imdbID, value: movie.Title };
-    },
-
     async onOptionSelection(id) {
       const movieSummaryData = await getMoviesData({ imdbId: id });
       const summaryMarkup = generateMovieSummaryMarkup(movieSummaryData);
