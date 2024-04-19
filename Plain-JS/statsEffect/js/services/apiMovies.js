@@ -1,8 +1,13 @@
 const KEY = "cb3cde7d";
 export const API_URL = `https://www.omdbapi.com/?apikey=${KEY}`;
 
-export async function getMoviesData(searchTerm) {
-  const response = await fetch(`${API_URL}&s=${searchTerm}`);
+export async function getMoviesData({ searchTerm, imdbId }) {
+  let url = API_URL;
+
+  if (searchTerm) url += `&s=${searchTerm}`;
+  if (imdbId) url += `&i=${imdbId}`;
+
+  const response = await fetch(url);
   console.log(response);
 
   if (!response.ok) {
@@ -18,7 +23,7 @@ export async function getMoviesData(searchTerm) {
 
   console.log(data);
 
-  return data.Results;
+  return data.Search;
 }
 
 // Poster
