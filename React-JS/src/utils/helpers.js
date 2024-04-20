@@ -32,3 +32,19 @@ const transform = split("a+very+nice+string", "+");
 const transform2 = split("Ra Ju", " ");
 
 console.log(transform, transform2);
+
+const join = function (arr, divider = "") {
+  let str = "";
+
+  for (let i = 0; i < arr.length; i++) {
+    if (i === arr.length - 1) {
+      str += arr[i];
+      continue;
+    }
+    str += arr[i] + divider;
+  }
+
+  console.log(str);
+};
+
+join(transform, " ");
