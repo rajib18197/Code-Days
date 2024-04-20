@@ -45,6 +45,7 @@ const join = function (arr, divider = "") {
   }
 
   console.log(str);
+  return str;
 };
 
 join(transform, " ");
