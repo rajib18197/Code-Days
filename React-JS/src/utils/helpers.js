@@ -9,6 +9,8 @@ export const hasPointedHalf = function (e) {
   return false;
 };
 
+// Problem Solving
+
 const split = function (str, divider) {
   const arr = [];
   let word = "";
@@ -28,10 +30,10 @@ const split = function (str, divider) {
   return arr;
 };
 
-const transform = split("a+very+nice+string", "+");
-const transform2 = split("Ra Ju", " ");
+// const transform = split("a+very+nice+string", "+");
+// const transform2 = split("Ra Ju", " ");
 
-console.log(transform, transform2);
+// console.log(transform, transform2);
 
 const join = function (arr, divider = "") {
   let str = "";
@@ -48,4 +50,4 @@ const join = function (arr, divider = "") {
   return str;
 };
 
-join(transform, " ");
+// join(transform, " ");
