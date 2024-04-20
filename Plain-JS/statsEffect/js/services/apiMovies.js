@@ -1,11 +1,11 @@
 const KEY = "cb3cde7d";
 export const API_URL = `https://www.omdbapi.com/?apikey=${KEY}`;
 
-export async function getMoviesData({ searchTerm, imdbId }) {
+export async function getMoviesData({ searchTerm, imdbID }) {
   let url = API_URL;
 
   if (searchTerm) url += `&s=${searchTerm}`;
-  if (imdbId) url += `&i=${imdbId}`;
+  if (imdbID) url += `&i=${imdbID}`;
 
   const response = await fetch(url);
 
