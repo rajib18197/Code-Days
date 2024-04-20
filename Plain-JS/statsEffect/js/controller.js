@@ -3,32 +3,59 @@ import AutoCompleteSearchView from "./views/autoCompleteSearchView.js";
 
 // <!-- Application Specific Code -->
 
-const controlAutoCompleteSearchView = function () {
-  new AutoCompleteSearchView({
-    rootElement: document.querySelector(".left-autocomplete"),
-    apiService: getMoviesData,
+const config = {
+  apiService: getMoviesData,
 
-    onSelectedValue(movie) {
-      return movie.imdbID;
-    },
+  onSelectedValue(movie) {
+    return movie.imdbID;
+  },
 
-    onInputValue(movie) {
-      return movie.Title;
-    },
+  onInputValue(movie) {
+    return movie.Title;
+  },
 
-    renderDropDownContentMarkup(movieData) {
-      return `
+  renderDropDownContentMarkup(movieData) {
+    return `
         <img src="${movieData.Poster}" alt="" />
         <p>${movieData.Title}</p>
       `;
-    },
+  },
 
+  async onSelection(movie) {
+    const movieDetails = await getMoviesData({ imdbID: movie.imdbID });
+    const markup = generateMovieDetailsMarkup(movieDetails);
+
+    document
+      .querySelector(".left-summary")
+      .insertAdjacentHTML("beforeend", markup);
+  },
+};
+
+const controlAutoCompleteSearchView = function () {
+  // Left-Side Search Summary
+  new AutoCompleteSearchView({
+    ...config,
+    rootElement: document.querySelector(".left-autocomplete"),
     async onSelection(movie) {
       const movieDetails = await getMoviesData({ imdbID: movie.imdbID });
       const markup = generateMovieDetailsMarkup(movieDetails);
 
       document
         .querySelector(".left-summary")
+        .insertAdjacentHTML("beforeend", markup);
+    },
+  });
+
+  // Right-Side Search Summary
+  new AutoCompleteSearchView({
+    ...config,
+    rootElement: document.querySelector(".right-autocomplete"),
+    async onSelection(movie) {
+      const movieDetails = await getMoviesData({ imdbID: movie.imdbID });
+      const markup = generateMovieDetailsMarkup(movieDetails);
+
+      document
+        .querySelector(".right-summary")
         .insertAdjacentHTML("beforeend", markup);
     },
   });
