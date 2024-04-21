@@ -9,8 +9,9 @@ export default function AutoComplete() {
   const debounce = useDebounce(handleChange, 1000);
 
   async function handleChange(e) {
-    const data = await getMoviesData({ searchTerm: value });
+    const data = await getMoviesData({ searchTerm: e.target.value });
     setList(data);
+    setShowDropdown(true);
   }
 
   return (
@@ -19,10 +20,10 @@ export default function AutoComplete() {
       <input type="text" id="search" onChange={debounce(handleChange)} />
 
       {showDropdown && (
-        <div class="dropdown dropdown__hidden">
+        <div className="dropdown">
           <div className="dropdown__menu">
             {list.map((item) => (
-              <div className="dropdown__item">
+              <div className="dropdown__item" key={item.imdbID}>
                 <img src={`${item.Poster}`} alt="item" />
                 <p>{item.Title}</p>
               </div>

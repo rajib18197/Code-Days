@@ -1,16 +1,20 @@
+import AutoComplete from "../../ui/AutoComplete";
+
 export default function MoviesFight() {
   return (
     <div>
-      <header class="header"></header>
-      <div class="columns">
-        <div class="column">
-          <div class="left-autocomplete"></div>
-          <div class="left-summary"></div>
+      <header className="header"></header>
+      <div className="columns">
+        <div className="column">
+          <div className="left-autocomplete">
+            <AutoComplete />
+          </div>
+          <div className="left-summary"></div>
         </div>
 
-        <div class="column">
-          <div class="right-autocomplete"></div>
-          <div class="right-summary"></div>
+        <div className="column">
+          <div className="right-autocomplete"></div>
+          <div className="right-summary"></div>
         </div>
       </div>
     </div>
