@@ -1,5 +1,5 @@
-export function useDebounce(businessLogic, delay) {
-  const debounce = function () {
+export function useDebounce() {
+  const debounce = function (businessLogic, delay) {
     let timeout;
 
     return (...args) => {
