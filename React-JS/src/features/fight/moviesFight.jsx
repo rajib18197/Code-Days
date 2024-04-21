@@ -2,65 +2,111 @@ import { useState } from "react";
 import { getMoviesData } from "../../../../Plain-JS/statsEffect/js/services/apiMovies";
 import AutoComplete from "../../ui/AutoComplete";
 
+const obj = {
+  async onSearch(searchTerm) {
+    return getMoviesData({ searchTerm });
+  },
+  onInputValue(movie) {
+    return movie.Title;
+  },
+};
+
 export default function MoviesFight() {
-  const [movieDetails, setMovieDetails] = useState({});
+  const [leftMovieDetails, setLeftMovieDetails] = useState({});
+  const [rightMovieDetails, setRightMovieDetails] = useState({});
 
-  const config = {
-    onSearch(searchTerm) {
-      getMoviesData({ searchTerm });
+  const config = [
+    {
+      id: 1,
+      ...obj,
+      type: "left",
+      onSelection(movie) {
+        leftHandleSelection(movie);
+      },
     },
-    onSelection(movie) {
-      handleSelection(movie);
-    },
-    onInputValue(movie) {
-      return movie.Title;
-    },
-  };
 
-  async function handleSelection(movie) {
+    {
+      id: 2,
+      ...obj,
+      type: "right",
+      onSelection(movie) {
+        rightHandleSelection(movie);
+      },
+    },
+  ];
+
+  async function leftHandleSelection(movie) {
     const movieDetails = await getMoviesData({ imdbID: movie.imdbID });
-    setMovieDetails(movieDetails);
+    setLeftMovieDetails(movieDetails);
+  }
+
+  async function rightHandleSelection(movie) {
+    const movieDetails = await getMoviesData({ imdbID: movie.imdbID });
+    setRightMovieDetails(movieDetails);
   }
 
   return (
     <div>
       <header className="header"></header>
       <div className="columns">
-        {Array.from({ length: 2 }, (_, i) => (
-          <div className="column">
-            <div className="left-autocomplete">
-              <AutoComplete
-                onSearch={config.onSearch}
-                onSelection={config.onSelection}
-                onInputValue={config.onInputValue}
-              />
-            </div>
-            <div className="left-summary">
-              {Object.keys(movieDetails).length > 0 && (
-                <>
-                  <img src={`${movieDetails.Poster}`} alt="movie" />
-                  <p>{movieDetails.Title}</p>
-                  <p>{movieDetails.Plot}</p>
-                  <p>
-                    Imdb Rating: {movieDetails.imdbRating}, Release Year:
-                    {movieDetails.Year}
-                  </p>
-                  <p>
-                    Actors: {movieDetails.Actors}, Director:
-                    {movieDetails.Director}
-                  </p>
-                  <p>Awards: {movieDetails.Awards}</p>
-                  <p>Income: {movieDetails.BoxOffice}</p>
-                  <p>Votes: {movieDetails.imdbVotes}</p>
-                </>
-              )}
-            </div>
+        <div className="column">
+          <div className={`left-autocomplete`}>
+            <AutoComplete
+              onSearch={config[0].onSearch}
+              onSelection={config[0].onSelection}
+              onInputValue={config[0].onInputValue}
+            />
           </div>
-        ))}
+          <div className={`left-summary`}>
+            {Object.keys(leftMovieDetails).length > 0 && (
+              <>
+                <img src={`${leftMovieDetails.Poster}`} alt="movie" />
+                <p>{leftMovieDetails.Title}</p>
+                <p> {leftMovieDetails.Plot}</p>
+                <p>
+                  Imdb Rating: ${leftMovieDetails.imdbRating}, Release Year: $
+                  {leftMovieDetails.Year}
+                </p>
+                <p>
+                  Actors: ${leftMovieDetails.Actors}, Director: $
+                  {leftMovieDetails.Director}
+                </p>
+                <p>Awards: ${leftMovieDetails.Awards}</p>
+                <p>Income: ${leftMovieDetails.BoxOffice}</p>
+                <p>Votes: ${leftMovieDetails.imdbVotes}</p>
+              </>
+            )}
+          </div>
+        </div>
 
         <div className="column">
-          <div className="right-autocomplete"></div>
-          <div className="right-summary"></div>
+          <div className={`right-autocomplete`}>
+            <AutoComplete
+              onSearch={config[1].onSearch}
+              onSelection={config[1].onSelection}
+              onInputValue={config[1].onInputValue}
+            />
+          </div>
+          <div className={`right-summary`}>
+            {Object.keys(rightMovieDetails).length > 0 && (
+              <>
+                <img src={`${rightMovieDetails.Poster}`} alt="movie" />
+                <p>{rightMovieDetails.Title}</p>
+                <p> {rightMovieDetails.Plot}</p>
+                <p>
+                  Imdb Rating: ${rightMovieDetails.imdbRating}, Release Year: $
+                  {rightMovieDetails.Year}
+                </p>
+                <p>
+                  Actors: ${rightMovieDetails.Actors}, Director: $
+                  {rightMovieDetails.Director}
+                </p>
+                <p>Awards: ${rightMovieDetails.Awards}</p>
+                <p>Income: ${rightMovieDetails.BoxOffice}</p>
+                <p>Votes: ${rightMovieDetails.imdbVotes}</p>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

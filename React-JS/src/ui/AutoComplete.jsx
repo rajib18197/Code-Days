@@ -15,6 +15,7 @@ export default function AutoComplete({ onSearch, onSelection, onInputValue }) {
 
   async function getData(value) {
     const data = await onSearch(value);
+    console.log(data);
     setList(data);
     setShowDropdown(true);
   }
