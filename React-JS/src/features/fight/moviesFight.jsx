@@ -17,18 +17,14 @@ export default function MoviesFight() {
 
   const config = [
     {
-      id: 1,
       ...obj,
-      type: "left",
       onSelection(movie) {
         leftHandleSelection(movie);
       },
     },
 
     {
-      id: 2,
       ...obj,
-      type: "right",
       onSelection(movie) {
         rightHandleSelection(movie);
       },
