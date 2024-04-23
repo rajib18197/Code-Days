@@ -51,3 +51,9 @@ const join = function (arr, divider = "") {
 };
 
 // join(transform, " ");
+
+async function wait(seconds) {
+  return new Promise((res) => {
+    setTimeout(() => res("success"), seconds * 1000);
+  });
+}
