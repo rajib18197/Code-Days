@@ -88,14 +88,17 @@ const accountReducer = function (bagOfMoney = 100, action) {
   }
 };
 
+// Combine All Reducers
 const rootReducer = Redux.combineReducer({
   account: accountReducer,
   policyList: policyListReducer,
   claimPolicyList: claimPolicyListReducer,
 });
 
+// Set up the Store
 const store = Redux.createStore(rootReducer);
 
+// Dispatch Actions
 store.dispatch(createPolicy("Alex Sam", 20));
 store.dispatch(createPolicy("Jack Adam", 60));
 store.dispatch(createPolicy("Martha Jones", 100));
