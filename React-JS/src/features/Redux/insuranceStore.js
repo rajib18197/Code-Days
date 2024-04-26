@@ -4,28 +4,28 @@ const DELETE_POLICY = "deletePolicy";
 const CLAIM_POLICY = "claimPolicy";
 
 // Drop off a form (action creators)
-const createPolicy = function (policyName, amount) {
+const createPolicy = function (fullName, amount) {
   return {
     type: CREATE_POLICY,
     payload: {
-      policyName,
+      fullName,
       amount,
     },
   };
 };
 
-const deletePolicy = function (policyName) {
+const deletePolicy = function (fullName) {
   return {
     type: DELETE_POLICY,
-    payload: policyName,
+    payload: fullName,
   };
 };
 
-const claimPolicy = function (policyName, amountToCollect) {
+const claimPolicy = function (fullName, amountToCollect) {
   return {
     type: CLAIM_POLICY,
     payload: {
-      policyName,
+      fullName,
       amountToCollect,
     },
   };
@@ -49,7 +49,7 @@ const deletePolicyReducer = function (oldListOfPolicies, action) {
   switch (action.type) {
     case DELETE_POLICY: {
       const newListOfPolicies = oldListOfPolicies.filter(
-        (policy) => policy.policyName !== action.payload
+        (policy) => policy.fullName !== action.payload
       );
       return newListOfPolicies;
     }
@@ -88,10 +88,18 @@ const accountReducer = function (bagOfMoney = 100, action) {
   }
 };
 
-const rootReducer = combineReducer({
+const rootReducer = Redux.combineReducer({
   account: accountReducer,
   policyList: policyListReducer,
   claimPolicyList: claimPolicyListReducer,
 });
 
-const store = createStore(rootReducer);
+const store = Redux.createStore(rootReducer);
+
+store.dispatch(createPolicy("Alex Sam", 20));
+store.dispatch(createPolicy("Jack Adam", 60));
+store.dispatch(createPolicy("Martha Jones", 100));
+
+store.dispatch(claimPolicy("Alex Sam", 100));
+store.dispatch(claimPolicy("Jack Adam", 90));
+store.dispatch(deletePolicy("Martha Jones"));
