@@ -1,25 +1,23 @@
-function cartReducert(state, action) {
-  return state;
-}
-
-const store = createStore(cartReducert);
+import { createContext } from "react";
+import store from "./cartState";
 
 const StoreContext = createContext();
 
-function Provider({ children }) {
+export default function Provider({ children }) {
   return (
-    <StoreContext.Provider value={{ store: store }}>
+    <StoreContext.Provider value={{ ...store }}>
       {children}
     </StoreContext.Provider>
   );
 }
 
-function connect(mapStateToProps) {
+export function connect(mapStateToProps) {
   return function (Component) {
     return function () {
       return (
         <StoreContext.Consumer>
-          {({ state }) => {
+          {(state) => {
+            console.log(state);
             const props = mapStateToProps(state);
             return <Component {...props} />;
           }}
@@ -28,5 +26,3 @@ function connect(mapStateToProps) {
     };
   };
 }
-
-connect(mapStateToProps)(Cart);
