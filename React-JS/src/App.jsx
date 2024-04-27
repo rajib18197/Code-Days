@@ -3,6 +3,7 @@
 // import ReviewList from "./features/test/ReviewList";
 
 import BlogsApp from "./features/api/ui/BlogsApp";
+import Test from "./features/api/ui/Test";
 
 // import Cart from "./features/Redux/Cart";
 // import Provider from "./features/Redux/Provider";
@@ -37,5 +38,9 @@ import BlogsApp from "./features/api/ui/BlogsApp";
 // }
 
 export default function App() {
-  return <BlogsApp />;
+  return (
+    <>
+      <BlogsApp />
+    </>
+  );
 }
