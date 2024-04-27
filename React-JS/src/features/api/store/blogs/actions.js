@@ -8,6 +8,8 @@ import {
 
 export const fetchedPostsAndUsers = function () {
   return async (dispatch, getState) => {
+    // As fetchPost() returns a promise that's why we awaited here
+    // console.log(dispatch(fetchedPosts()), "promise");
     await dispatch(fetchedPosts());
 
     const userIds = getState()
