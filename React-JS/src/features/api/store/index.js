@@ -7,6 +7,11 @@ const rootReducer = combineReducers({
   blogs: blogsReducer,
   count: counterReducer,
 });
-const store = createStore(rootReducer, applyMiddleware(thunk));
+
+const initialState = {
+  blogs: {},
+  count: { counter: 20, string: "study" },
+};
+const store = createStore(rootReducer, initialState, applyMiddleware(thunk));
 
 export default store;

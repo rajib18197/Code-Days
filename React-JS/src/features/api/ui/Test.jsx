@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
 export default function Test() {
+  console.log("re");
   const dispatch = useDispatch();
   const { counter, string } = useSelector((state) => state.count);
   console.log(counter, string, 20);
