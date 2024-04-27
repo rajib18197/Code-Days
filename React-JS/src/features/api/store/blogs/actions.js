@@ -27,6 +27,7 @@ export const fetchedPostsAndUsers = function () {
 export const fetchedPosts = function () {
   return async (dispatch, getState) => {
     dispatch({ type: PENDING_POSTS });
+    console.log(121212);
 
     const response = await fetch(`https://jsonplaceholder.typicode.com/posts`);
 

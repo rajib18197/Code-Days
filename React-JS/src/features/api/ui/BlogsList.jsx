@@ -25,7 +25,10 @@ export default function BlogsList() {
 
   //  === UI Related Stuff ===
 
-  if (isLoading) return <p>Loading Blogs Data...</p>;
+  if (isLoading) {
+    console.log(212121);
+    return <p>Loading Blogs Data...</p>;
+  }
 
   if (!isLoading && error) return <p>{error.message}</p>;
 
