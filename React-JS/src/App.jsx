@@ -2,8 +2,10 @@
 // import ProductList from "./features/test/ProductList";
 // import ReviewList from "./features/test/ReviewList";
 
-import Cart from "./features/Redux/Cart";
-import Provider from "./features/Redux/Provider";
+import BlogsApp from "./features/api/ui/BlogsApp";
+
+// import Cart from "./features/Redux/Cart";
+// import Provider from "./features/Redux/Provider";
 
 // async function wait(seconds) {
 //   return new Promise((res) => {
@@ -35,9 +37,5 @@ import Provider from "./features/Redux/Provider";
 // }
 
 export default function App() {
-  return (
-    <Provider>
-      <Cart />
-    </Provider>
-  );
+  return <BlogsApp />;
 }
