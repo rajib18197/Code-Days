@@ -1,6 +1,8 @@
 const thunk = function ({ dispatch, getState }) {
   return function (next) {
     return function (action) {
+      console.log(typeof action, 111);
+
       if (typeof action === "function") {
         return action(dispatch, getState);
       }

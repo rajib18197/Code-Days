@@ -6,6 +6,24 @@ import {
   wait,
 } from "./actionTypes";
 
+export const fetchedPostsAndUsers = function () {
+  return async (dispatch, getState) => {
+    await dispatch(fetchedPosts());
+
+    const userIds = getState()
+      .blogs.data.map((post) => post.userId)
+      .reduce((acc, cur) => {
+        if (acc.includes(cur)) return acc;
+        return [...acc, cur];
+      }, []);
+
+    console.log(userIds);
+
+    userIds.forEach((id) => dispatch(fetchedUser(id)));
+    console.log("hello");
+  };
+};
+
 export const fetchedPosts = function () {
   return async (dispatch, getState) => {
     dispatch({ type: PENDING_POSTS });

@@ -1,12 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useQueryDispatch } from "../hooks/useQuery";
 import { fetchedUser } from "../store/blogs/actions";
+import { memo } from "react";
 
-export default function BlogAuthor({ userId }) {
+function BlogAuthor({ userId }) {
   const { isLoading, data: users, error } = useSelector((state) => state.users);
 
-  const dispatch = useDispatch();
-  useQueryDispatch({ actionCreator: () => fetchedUser(userId), dispatch });
+  //   const dispatch = useDispatch();
+  //   useQueryDispatch({
+  //     actionCreator: () => fetchedUser(userId),
+  //     dispatch,
+  //     id: userId,
+  //   });
 
   const user = users?.find((user) => user.id === userId);
   //  === UI Related Stuff ===
@@ -16,6 +21,8 @@ export default function BlogAuthor({ userId }) {
   if (!isLoading && error) return <p>{error.message}</p>;
 
   if (!isLoading && !error && !user) return <p>Unknown Author!!!</p>;
+
+  //   console.log(user.id);
 
   return (
     <div style={{ padding: "10px", border: "2px solid orangered" }}>
@@ -27,3 +34,5 @@ export default function BlogAuthor({ userId }) {
     </div>
   );
 }
+
+export default BlogAuthor;

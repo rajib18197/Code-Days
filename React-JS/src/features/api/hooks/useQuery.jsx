@@ -25,8 +25,13 @@ export function useQuery({ queryFn }) {
   return { isLoading, data, error };
 }
 
-export function useQueryDispatch({ actionCreator, dispatch }) {
+const cache = new Map();
+
+export function useQueryDispatch({ actionCreator, dispatch, id }) {
   useEffect(function () {
+    // if (!cache.has(id)) {
     dispatch(actionCreator());
+    //   cache.set(id, "DONE");
+    // }
   }, []);
 }

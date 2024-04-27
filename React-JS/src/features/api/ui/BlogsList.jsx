@@ -1,15 +1,27 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useQueryDispatch } from "../hooks/useQuery";
-import { fetchedPosts, fetchedUser } from "../store/blogs/actions";
+import {
+  fetchedPosts,
+  fetchedPostsAndUsers,
+  fetchedUser,
+} from "../store/blogs/actions";
 import BlogAuthor from "./BlogAuthor";
 
 export default function BlogsList() {
-  const { isLoading, data: blogs, error } = useSelector((state) => state.blogs);
+  const { isLoading, data, error } = useSelector((state) => state.blogs);
+  const { data: users } = useSelector((state) => state.users);
+  const blogs = data.reduce((acc, cur) => {
+    const ids = acc.map((el) => el.userId);
+
+    if (ids.includes(cur.userId)) return acc;
+    return [...acc, cur];
+  }, []);
 
   const dispatch = useDispatch();
-  console.log(blogs);
+  //   console.log(blogs);
 
-  useQueryDispatch({ actionCreator: fetchedPosts, dispatch });
+  //   useQueryDispatch({ actionCreator: fetchedPosts, dispatch });
+  useQueryDispatch({ actionCreator: fetchedPostsAndUsers, dispatch });
 
   //  === UI Related Stuff ===
 
