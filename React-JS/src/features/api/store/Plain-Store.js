@@ -1,46 +1,6 @@
-class Redux {
-  static combineReducers(obj, { state, action = {} } = {}) {
-    const appState = {};
+import { createStore, combineReducers } from "./Identical-Redux/lookout.js";
 
-    for (let [key, value] of Object.entries(obj)) {
-      appState[key] = obj[key](state?.[key], action);
-    }
-
-    return { obj, appState };
-  }
-
-  static createStore(reducer, initialState) {
-    const store = {
-      state: reducer.appState,
-      listeners: [],
-      getState() {
-        return this.state;
-      },
-    };
-
-    store.dispatch = function (action) {
-      // Action must be an plain JS object (TODO: implement later)
-
-      const newState = Redux.combineReducers(reducer.obj, {
-        state: this.state,
-        action,
-      });
-
-      if (newState !== this.state) {
-        this.state = newState.appState;
-        this.listeners.forEach((listener) => listener());
-      }
-    };
-
-    store.subscribe = function (listener) {
-      this.listeners.push(listener);
-    };
-
-    return store;
-  }
-}
-
-const rootReducer = Redux.combineReducers({
+const rootReducer = combineReducers({
   cart: (state = [], action) => {
     if (action.type === "CART/ADD_NEW_ITEM") {
       return [...state, action.payload];
@@ -58,7 +18,7 @@ const rootReducer = Redux.combineReducers({
   },
 });
 
-const store = Redux.createStore(rootReducer);
+const store = createStore(rootReducer);
 
 store.dispatch({
   type: "CART/ADD_NEW_ITEM",
