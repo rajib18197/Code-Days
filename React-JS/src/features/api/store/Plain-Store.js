@@ -1,6 +1,6 @@
 const combineReducers = function (obj, { state, action = {} } = {}) {
   const appState = {};
-  console.log(state, obj);
+
   for (let [key, value] of Object.entries(obj)) {
     appState[key] = obj[key](state?.[key], action);
   }
@@ -26,7 +26,7 @@ const createStore = function (reducer, initialState) {
     // console.log(newState);
 
     if (newState !== this.state) {
-      store.state = newState;
+      this.state = newState;
       this.listeners.forEach((listener) => listener());
     }
   };
