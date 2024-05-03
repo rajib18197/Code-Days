@@ -29,9 +29,9 @@ const subset3 = function (arr, choiceBox, ans) {
   subset3(arr.slice(1), choiceBox, ans);
 };
 
-const ans2 = [];
-subset3([1, 2, 3], [], ans2);
-console.log(ans2);
+// const ans2 = [];
+// subset3([1, 2, 3], [], ans2);
+// console.log(ans2);
 
 // 3
 const subset = function (arr, choiceBox) {
@@ -51,3 +51,23 @@ const subset = function (arr, choiceBox) {
 
 // const mixedVersions = subset(luxuryCars, "");
 // console.log(mixedVersions);
+
+// 4
+const subset4 = function (arr, choiceBox) {
+  if (arr.length === 0) {
+    const newArr = [];
+    console.log(choiceBox, 111);
+    newArr.push([...choiceBox]);
+    return newArr;
+  }
+
+  choiceBox.push(arr[0]);
+  const accepted = subset4(arr.slice(1), choiceBox);
+  choiceBox.pop();
+  const rejected = subset4(arr.slice(1), choiceBox);
+  //   console.log(accepted, rejected, 11);
+  return [].concat(accepted, rejected);
+};
+
+const mixed = subset4([1, 2, 3], []);
+console.log(mixed);
