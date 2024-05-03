@@ -1,5 +1,6 @@
 const luxuryCars = "abc";
 
+// 1
 const subset2 = function (arr, choiceBox, ans) {
   if (arr.length === 0) {
     ans.push([choiceBox]);
@@ -14,6 +15,7 @@ const subset2 = function (arr, choiceBox, ans) {
 // subset2(luxuryCars, "", ans);
 // console.log(ans);
 
+// 2
 const subset3 = function (arr, choiceBox, ans) {
   if (arr.length === 0) {
     console.log(choiceBox);
@@ -31,6 +33,7 @@ const ans2 = [];
 subset3([1, 2, 3], [], ans2);
 console.log(ans2);
 
+// 3
 const subset = function (arr, choiceBox) {
   if (arr.length === 0) {
     console.log(choiceBox);
