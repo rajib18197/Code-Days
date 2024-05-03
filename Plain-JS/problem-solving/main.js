@@ -42,7 +42,7 @@ const subset = function (arr, choiceBox) {
 
   const accepted = subset(arr.slice(1), choiceBox + arr[0]);
   const rejected = subset(arr.slice(1), choiceBox);
-  //   Not Possible cause - 1st return [[1,2]], 2nd - [[[1, 2]]], every return new arr will be added which is invalid
+  //   Not Possible cause - 1st return [[1,2]], 2nd - [[[1, 2]]], every return new arr will be added which is invalid, Only Possible if base case returns 2d array.
   //   const arr2 = [];
   //   arr2.push(accepted);
   //   arr2.push(rejected);
@@ -65,8 +65,12 @@ const subset4 = function (arr, choiceBox) {
   const accepted = subset4(arr.slice(1), choiceBox);
   choiceBox.pop();
   const rejected = subset4(arr.slice(1), choiceBox);
-  //   console.log(accepted, rejected, 11);
-  return [].concat(accepted, rejected);
+
+  const arr2 = [];
+  arr2.push(...accepted);
+  arr2.push(...rejected);
+  //   return [].concat(accepted, rejected);
+  return arr2;
 };
 
 const mixed = subset4([1, 2, 3], []);
