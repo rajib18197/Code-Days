@@ -95,12 +95,14 @@ class LinkedList {
   insertAtFirst(data) {
     if (!this.#head) {
       this.#head = this.#createNode(data);
+      this.#length++;
       return;
     }
 
     const newNode = this.#createNode(data);
     newNode.next = this.#head;
     this.#head = newNode;
+    this.#length++;
   }
 
   insertAtLast(data) {
@@ -116,6 +118,54 @@ class LinkedList {
 
     const newNode = this.#createNode(data);
     temp.next = newNode;
+    this.#length++;
+  }
+
+  #insertAtMiddle(data, temp) {
+    const newNode = this.#createNode(data);
+    newNode.next = temp.next;
+    temp.next = newNode;
+    this.#length++;
+  }
+
+  insert(data, position) {
+    if (position === 0) {
+      this.insertAtFirst(data);
+      return;
+    }
+
+    if (position === this.#length) {
+      this.insertAtLast(data);
+      return;
+    }
+
+    let temp = this.#head;
+    let start = position - 1;
+
+    while (start--) {
+      temp = temp.next;
+    }
+
+    this.#insertAtMiddle(data, temp);
+  }
+
+  insertBulkAtFirst(arr) {
+    for (let el of arr) {
+      this.insertAtFirst(el);
+    }
+  }
+
+  insertBulkAtLast(arr) {
+    let temp = this.#head;
+    while (temp.next) {
+      temp = temp.next;
+    }
+
+    for (let el of arr) {
+      temp.next = this.#createNode(el);
+      temp = temp.next;
+      this.#length++;
+    }
   }
 
   insertBulk(arr, startPosition) {
@@ -132,9 +182,7 @@ class LinkedList {
     }
 
     for (let i = 0; i < arr.length; i++) {
-      const newNode = this.#createNode(arr[i]);
-      newNode.next = temp.next;
-      temp.next = newNode;
+      this.#insertAtMiddle(arr[i], temp);
       temp = temp.next;
     }
   }
@@ -160,4 +208,7 @@ ll.insertAtLast(12);
 ll.insertAtLast(100);
 const arr = [1, 2, 3, 4];
 ll.insertBulk(arr, 4);
+ll.insertBulkAtFirst([666, 333]);
+ll.insertBulkAtLast([133, 188]);
+ll.insert(266, 2);
 ll.displayList();
