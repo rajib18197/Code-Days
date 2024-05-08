@@ -294,14 +294,36 @@ class LinkedList {
 
     return "Palindrome";
   }
+
+  removeEveryKthNode(k) {
+    let temp = this.#head;
+    let prev = null;
+    let count = 1;
+    while (temp) {
+      if (count === k) {
+        prev.next = temp.next;
+        temp = prev.next;
+        count = 1;
+      } else {
+        prev = temp;
+        temp = temp.next;
+        count++;
+      }
+    }
+  }
 }
 
 const ll = new LinkedList();
 ll.insertAtLast(1);
 ll.insertAtLast(2);
 ll.insertAtLast(3);
-ll.insertAtLast(2);
-ll.insertAtLast(1);
+ll.insertAtLast(4);
+ll.insertAtLast(5);
+ll.insertAtLast(6);
+ll.insertAtLast(10);
+ll.insertAtLast(11);
+ll.insertAtLast(18);
+ll.insertAtLast(100);
 // const arr = [1, 2, 3, 4];
 // ll.insertBulk(arr, 4);
 // ll.insertBulkAtFirst([666, 333]);
@@ -311,5 +333,7 @@ ll.insertAtLast(1);
 // // ll.getMiddleNode();
 // ll.displayList();
 // ll.rotate(5);
-console.log(ll.checkPalindrome());
+// console.log(ll.checkPalindrome());
+ll.displayList();
+ll.removeEveryKthNode(3);
 ll.displayList();
