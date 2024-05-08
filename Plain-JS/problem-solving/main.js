@@ -225,6 +225,33 @@ class LinkedList {
 
     console.log(slow);
   }
+
+  rotate(k) {
+    let temp = this.#head;
+    let count = 0;
+
+    while (temp) {
+      count++;
+      temp = temp.next;
+    }
+    console.log(count);
+    count = count - k;
+    temp = this.#head;
+    let prev;
+
+    while (count--) {
+      prev = temp;
+      temp = temp.next;
+    }
+
+    prev.next = null;
+    let tail = temp;
+    while (tail.next) {
+      tail = tail.next;
+    }
+    tail.next = this.#head;
+    this.#head = temp;
+  }
 }
 
 const ll = new LinkedList();
@@ -239,5 +266,7 @@ ll.insertBulkAtFirst([666, 333]);
 ll.insertBulkAtLast([133, 188]);
 ll.insert(266, 2);
 // ll.reverse();
-ll.getMiddleNode();
+// ll.getMiddleNode();
+ll.displayList();
+ll.rotate(5);
 ll.displayList();
