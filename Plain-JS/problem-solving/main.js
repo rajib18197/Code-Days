@@ -252,21 +252,64 @@ class LinkedList {
     tail.next = this.#head;
     this.#head = temp;
   }
+
+  checkPalindrome() {
+    let temp = this.#head;
+
+    let count = 0;
+    while (temp) {
+      temp = temp.next;
+      count++;
+    }
+
+    count = Math.floor(count / 2);
+    temp = this.#head;
+    count--;
+    while (count--) {
+      temp = temp.next;
+    }
+
+    let head2 = temp.next;
+    temp.next = null;
+
+    let succ = null;
+    let prev = null;
+
+    while (head2) {
+      succ = head2.next;
+      head2.next = prev;
+      prev = head2;
+      head2 = succ;
+    }
+
+    head2 = prev;
+    temp = this.#head;
+
+    while (temp) {
+      if (head2.data !== temp.data) return "Not a palindrome";
+
+      head2 = head2.next;
+      temp = temp.next;
+    }
+
+    return "Palindrome";
+  }
 }
 
 const ll = new LinkedList();
-ll.insertAtFirst(22);
-ll.insertAtFirst(32);
-ll.insertAtFirst(42);
-ll.insertAtLast(12);
-ll.insertAtLast(100);
-const arr = [1, 2, 3, 4];
-ll.insertBulk(arr, 4);
-ll.insertBulkAtFirst([666, 333]);
-ll.insertBulkAtLast([133, 188]);
-ll.insert(266, 2);
-// ll.reverse();
-// ll.getMiddleNode();
-ll.displayList();
-ll.rotate(5);
+ll.insertAtLast(1);
+ll.insertAtLast(2);
+ll.insertAtLast(3);
+ll.insertAtLast(2);
+ll.insertAtLast(1);
+// const arr = [1, 2, 3, 4];
+// ll.insertBulk(arr, 4);
+// ll.insertBulkAtFirst([666, 333]);
+// ll.insertBulkAtLast([133, 188]);
+// ll.insert(266, 2);
+// // ll.reverse();
+// // ll.getMiddleNode();
+// ll.displayList();
+// ll.rotate(5);
+console.log(ll.checkPalindrome());
 ll.displayList();
