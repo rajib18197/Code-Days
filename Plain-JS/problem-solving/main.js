@@ -198,6 +198,33 @@ class LinkedList {
 
     console.log(result + "null");
   }
+
+  reverse() {
+    let temp = this.#head;
+    let prev = null;
+    let curr = temp;
+    let succ = null;
+
+    while (curr) {
+      succ = curr.next;
+      curr.next = prev;
+      prev = curr;
+      curr = succ;
+    }
+    this.#head = prev;
+  }
+
+  getMiddleNode() {
+    let slow = this.#head;
+    let fast = this.#head;
+
+    while (fast && fast.next) {
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+
+    console.log(slow);
+  }
 }
 
 const ll = new LinkedList();
@@ -211,4 +238,6 @@ ll.insertBulk(arr, 4);
 ll.insertBulkAtFirst([666, 333]);
 ll.insertBulkAtLast([133, 188]);
 ll.insert(266, 2);
+// ll.reverse();
+ll.getMiddleNode();
 ll.displayList();
