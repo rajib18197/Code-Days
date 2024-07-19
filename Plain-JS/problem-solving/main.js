@@ -337,3 +337,5 @@ ll.insertAtLast(100);
 ll.displayList();
 ll.removeEveryKthNode(3);
 ll.displayList();
+
+// you don't need an API if you don't need the data also in other places like a mobile app. so if you have a DB and your Next.js app, you query the DB straight from the server components.
