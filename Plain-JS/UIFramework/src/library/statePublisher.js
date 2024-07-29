@@ -1,3 +1,4 @@
+// Publisher - subscriber
 export default class StatePublisher {
   constructor() {
     this.subscribers = [];
