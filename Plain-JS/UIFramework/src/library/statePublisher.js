@@ -1,19 +1,19 @@
 export default class StatePublisher {
   constructor() {
-    this.data = [];
+    this.subscribers = [];
   }
 
-  subscribe(cb) {
-    this.data.push(cb);
+  subscribe(subscriber) {
+    this.subscribers.push(subscriber);
   }
 
-  change() {
-    this.data.forEach((cb) => {
-      //   const curState = cb.state;
-      cb.changeState();
-      //   const nextState = cb.state;
-
-      cb.notify();
+  // Change a specific subscriber (State Updating)
+  publish(subscriber) {
+    const subscriberToUpdate = this.subscribers.find((sub) => {
+      return subscriber === sub.UI;
     });
+
+    subscriberToUpdate.changeState();
+    subscriberToUpdate.notify();
   }
 }
