@@ -466,25 +466,6 @@ console.log(max);
 
 // *****************
 
-// document.addEventListener("DOMContentLoaded", function () {
-//   console.log("DOM");
-// });
-
-// const power = function (a, b) {
-//   let temp = 0;
-
-//   if (b === 0) return 1;
-
-//   temp = power(a, Math.floor(b / 2));
-//   console.log(temp);
-
-//   if (b % 2 === 0) return temp * temp;
-//   else return a * temp * temp;
-// };
-
-// const power1 = power(2, 6);
-// console.log(power1);
-
 const argsCount = function (number) {
   let count = 0;
   let num = number;
