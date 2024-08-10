@@ -34,5 +34,6 @@ export class MatchReader {
 }
 
 // Favor Object Composition over Class Inheritance.
-// Delegation is one of the way to make Composition a powerful pattern.
+// Delegation is one of the way to make Composition a powerful Principle.
 // So Delegation is a way of implementation of a generic term Composition.
+// So, Delegation is a design pattern and Composition is a Design principle.
