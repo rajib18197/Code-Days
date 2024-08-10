@@ -942,18 +942,18 @@ const explorer = {
       items: [
         {
           id: "3",
-          name: "public nested 1",
+          name: "controllers",
           isFolder: true,
           items: [
             {
               id: "4",
-              name: "index.html",
+              name: "index.js",
               isFolder: false,
               items: [],
             },
             {
               id: "5",
-              name: "hello.html",
+              name: "organizer.js",
               isFolder: false,
               items: [],
             },
@@ -961,7 +961,7 @@ const explorer = {
         },
         {
           id: "6",
-          name: "file.txt",
+          name: "hello.txt",
           isFolder: false,
           items: [],
         },
@@ -974,13 +974,13 @@ const explorer = {
       items: [
         {
           id: "8",
-          name: "App.js",
+          name: "App.tsx",
           isFolder: false,
           items: [],
         },
         {
           id: "9",
-          name: "Index.js",
+          name: "Index.jsx",
           isFolder: false,
           items: [],
         },
