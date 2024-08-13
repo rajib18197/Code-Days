@@ -8,33 +8,31 @@ class Node {
 
 class BinaryTree {
   queue = [];
-  tree = null;
+  root = null;
 
   constructor(data) {
-    this.data = data;
-
-    this.tree = this.createTree();
+    this.initialValues = data;
+    this.root = this.createTree();
   }
 
   createTree() {
-    let node = new Node(this.data[0]);
-    this.data.shift();
-    this.queue.push(node);
+    const root = new Node(this.initialValues[0]);
+    this.initialValues.shift();
+    this.queue.push(root);
 
     while (this.queue.length) {
       const temp = this.queue.shift();
-      //   console.log(temp, 11);
 
-      const leftValue = this.data[0];
-      this.data.shift();
+      const leftValue = this.initialValues[0];
+      this.initialValues.shift();
 
       if (leftValue && leftValue !== -1) {
         temp.left = new Node(leftValue);
         this.queue.push(temp.left);
       }
 
-      const rightValue = this.data[0];
-      this.data.shift();
+      const rightValue = this.initialValues[0];
+      this.initialValues.shift();
 
       if (rightValue && rightValue !== -1) {
         temp.right = new Node(rightValue);
@@ -42,11 +40,11 @@ class BinaryTree {
       }
     }
 
-    return node;
+    return root;
   }
 
   render() {
-    this.preOrderTraversal(this.tree);
+    this.preOrderTraversal(this.root);
   }
 
   preOrderTraversal(root) {
@@ -72,3 +70,64 @@ const data = [
 
 const binaryTree = new BinaryTree(data);
 binaryTree.render();
+
+const findLeftAndRightDepth = function (root, pos, depth) {
+  if (!root) return;
+
+  depth.left = Math.min(pos, depth.left);
+  depth.right = Math.max(pos, depth.right);
+
+  findLeftAndRightDepth(root.left, pos - 1, depth);
+  findLeftAndRightDepth(root.right, pos + 1, depth);
+};
+
+const verticalTraversal = (root) => {
+  const depth = { left: 0, right: 0 };
+  findLeftAndRightDepth(root, 0, depth);
+  const negativePos = [];
+  const positivePos = [];
+
+  bfsTraversal(root, 0, negativePos, positivePos);
+  console.log(negativePos);
+  console.log(positivePos);
+};
+
+const bfsTraversal = function (root, pos, negativePos, positivePos) {
+  let queue = [];
+  let index = [];
+  const temp = root;
+  queue.push(temp);
+  index.push(pos);
+
+  while (queue.length) {
+    const temp = queue.shift();
+    const curPos = index.shift();
+
+    if (curPos <= 0) {
+      if (negativePos[Math.abs(curPos)]) {
+        negativePos[Math.abs(curPos)].push(temp.data);
+      } else {
+        negativePos[Math.abs(curPos)] = [temp.data];
+      }
+    }
+
+    if (curPos > 0) {
+      if (positivePos[curPos]) {
+        positivePos[curPos].push(temp.data);
+      } else {
+        positivePos[curPos] = [temp.data];
+      }
+    }
+
+    if (temp.left) {
+      queue.push(temp.left);
+      index.push(curPos - 1);
+    }
+    if (temp.right) {
+      queue.push(temp.right);
+      index.push(curPos + 1);
+    }
+  }
+};
+
+verticalTraversal(binaryTree.root);
