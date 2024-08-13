@@ -1037,3 +1037,52 @@ preOrderTraversal3(explorer, "7", {
 });
 
 preOrderTraversal2(explorer, "");
+
+//////////////////////////////////////////////
+///////////////
+
+// 1st Data Structure
+const categories = [
+  { name: "Programming", communities: ["JavaScript", "Python", "C++"] },
+  { name: "Sports", communities: ["Football", "Basketball", "Cricket"] },
+  {
+    name: "Travel",
+    communities: ["Backpacking", "Luxury Travel", "Adventure"],
+  },
+  { name: "Art", communities: ["Painting", "Photography", "Sculpture"] },
+];
+
+// 2nd Data Sctructure
+const communities = [
+  { name: "JS is Fun", peoples: 10, active: true, category: "Programming" },
+  { name: "Talk Football", peoples: 30, active: true, category: "Sports" },
+  { name: "React JS", peoples: 40, active: true, category: "Programming" },
+  { name: "Hard Adventure", peoples: 20, active: true, category: "Travel" },
+  { name: "Talk Cricket", peoples: 100, active: true, category: "Sports" },
+  { name: "Java", peoples: 10, active: true, category: "Programming" },
+  { name: "Luxury Villas", peoples: 200, active: true, category: "Travel" },
+];
+
+const trackCategories = [
+  { index: 0, next: { index: 2, next: { index: 5, next: null } } },
+  { index: 1, next: { index: 4, next: null } },
+  { index: 3, next: { index: 6, next: null } },
+];
+
+const mappedArr = communities.reduce((acc, cur, i) => {
+  const hasCategoryIndex = acc.findIndex((el) => el?.category === cur.category);
+
+  if (hasCategoryIndex !== -1) {
+    const newCommunity = {
+      index: i,
+      next: acc[hasCategoryIndex],
+      category: cur.category,
+    };
+    acc[hasCategoryIndex] = newCommunity;
+    return acc;
+  }
+
+  const newCommunity = { index: i, next: null, category: cur.category };
+  acc.push(newCommunity);
+  return acc;
+}, []);
