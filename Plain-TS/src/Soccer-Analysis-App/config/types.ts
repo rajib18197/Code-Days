@@ -1,15 +1,9 @@
-export enum MatchResult {
+enum MatchResult {
   HomeWin = "H",
   AwayWin = "A",
   Draw = "D",
 }
 
-export type MatchData = [
-  Date,
-  string,
-  string,
-  number,
-  number,
-  MatchResult,
-  string
-];
+type MatchData = [Date, string, string, number, number, MatchResult, string];
+
+module.exports = { MatchResult };

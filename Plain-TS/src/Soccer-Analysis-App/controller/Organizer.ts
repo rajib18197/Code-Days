@@ -1,6 +1,7 @@
 import { MatchData } from "../config/types";
-import { HTMLOutput } from "../view/HTMLOutput";
+// import { HTMLOutput } from "../view/HTMLOutput";
 import { TeamAnalyzer } from "../model/TeamAnalyzer";
+import { ConsoleOutput } from "../view/ConsoleOutput";
 
 export interface Analyzer {
   runWonAnalysis(): number;
@@ -22,7 +23,7 @@ export class Organizer {
   ): Organizer {
     return new Organizer(
       new TeamAnalyzer(teamName, matches, season),
-      new HTMLOutput(season)
+      new ConsoleOutput()
     );
   }
 

@@ -1,4 +1,4 @@
-import fs from "fs";
+const fs = require("fs");
 import { DataReader } from "./MatchReader";
 
 export class CSVFileReader implements DataReader {

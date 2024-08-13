@@ -1,6 +1,6 @@
-import { MatchData, MatchResult } from "../../config/types";
-import { transformDateStrToDate } from "../../utils/helpers";
-import { CSVFileReader } from "./CSVFileReader";
+const { MatchData, MatchResult } = require("../../config/types");
+const { transformDateStrToDate } = require("../../utils/helpers");
+const { CSVFileReader } = require("./CSVFileReader");
 
 export interface DataReader {
   data: string[][];
