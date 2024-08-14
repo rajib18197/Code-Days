@@ -8,7 +8,13 @@ class Node {
 
 class Tree {
   root = null;
-  constructor() {}
+  constructor(data) {
+    this.data = data;
+
+    for (let i = 0; i < this.data.length; i++) {
+      this.createNode(...this.data[i]);
+    }
+  }
 
   createNode(parentName, childName) {
     const childNode = new Node(childName);
@@ -40,12 +46,22 @@ class Tree {
   }
 }
 
-const tree = new Tree();
-tree.createNode("DSA", "Linked List");
-tree.createNode("DSA", "Stack");
-tree.createNode("Stack", "Disign A Stack with Queue");
-tree.createNode("Linked List", "Doubly LL");
-tree.createNode("Doubly LL", "Reverse A Doubly LL");
-tree.createNode("Linked List", "Circular LL");
-tree.createNode("Circular LL", "Detect and Remove a Loop");
+const data = [
+  ["DSA", "Linked List"],
+  ["DSA", "Stack"],
+  ["Stack", "Disign A Stack with Queue"],
+  ["Linked List", "Doubly LL"],
+  ["Doubly LL", "Reverse A Doubly LL"],
+  ["Linked List", "Circular LL"],
+  ["Circular LL", "Detect and Remove a Loop"],
+];
+
+const tree = new Tree(data);
+// tree.createNode("DSA", "Linked List");
+// tree.createNode("DSA", "Stack");
+// tree.createNode("Stack", "Disign A Stack with Queue");
+// tree.createNode("Linked List", "Doubly LL");
+// tree.createNode("Doubly LL", "Reverse A Doubly LL");
+// tree.createNode("Linked List", "Circular LL");
+// tree.createNode("Circular LL", "Detect and Remove a Loop");
 console.log(tree.root);
