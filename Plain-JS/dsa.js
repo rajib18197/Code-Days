@@ -791,3 +791,528 @@ containsCycle([
   ["b", "z", "b"],
   ["b", "b", "a"],
 ]);
+
+// class TreeNode {
+//   constructor(value, left, right) {
+//     this.value = value;
+//     this.left = left || null;
+//     this.right = right || null;
+//   }
+// }
+
+// const buildBinaryTreeDFS = function (arr) {
+//   const value = arr.shift();
+
+//   if (value === -1 || value === null || value === undefined) {
+//     return null;
+//   }
+
+//   const treeNode = new TreeNode(value);
+
+//   treeNode.left = buildBinaryTreeDFS(arr);
+//   treeNode.right = buildBinaryTreeDFS(arr);
+//   return treeNode;
+// };
+
+// const arr = [1, 2, 3, 4, -1, -1, 5, -1, -1, 6, -1, -1, 7, 8, -1, -1, 9, -1, -1];
+// const tree = buildBinaryTreeDFS(arr);
+// console.log(tree);
+
+// const buildBinaryTree = function (arr, index) {
+//   if (arr[index] === -1 || arr[index] === null || arr[index] === undefined) {
+//     return null;
+//   }
+
+//   const treeNode = new TreeNode(arr[index]);
+//   console.log(index);
+
+//   treeNode.left = buildBinaryTree(arr, 2 * index + 1);
+//   treeNode.right = buildBinaryTree(arr, 2 * index + 2);
+//   return treeNode;
+// };
+
+// const buildBinaryTreeWithBFS = function (queue) {
+//   const value = queue.shift();
+//   const root = new TreeNode(value);
+//   const internalQueue = [root];
+
+//   while (queue.length !== 0) {
+//     const temp = internalQueue.shift();
+
+//     const leftValue = queue.shift();
+//     const rightValue = queue.shift();
+
+//     if (leftValue !== -1 || leftValue === undefined || leftValue === null) {
+//       temp.left = new TreeNode(leftValue);
+//       internalQueue.push(temp.left);
+//     }
+
+//     if (rightValue !== -1 || rightValue === undefined || rightValue === null) {
+//       temp.right = new TreeNode(rightValue);
+//       internalQueue.push(temp.right);
+//     }
+//   }
+
+//   return root;
+// };
+
+// const queue = [
+//   1, 2, 3, 4, 5, 6, 7, 8, 10, -1, 9, -1, -1, 16, 19, -1, -1, 20, -1, -1, -1, -1,
+//   -1, -1, -1, 22, 23, 24, -1, -1, -1,
+// ];
+// const root = buildBinaryTreeWithBFS(queue);
+// console.log(root);
+
+// let l = 0;
+// let r = 0;
+
+// const findLeftAndRight = function (root, index) {
+//   if (!root) return;
+
+//   l = Math.min(l, index);
+//   r = Math.max(r, index);
+
+//   findLeftAndRight(root.left, index - 1);
+//   findLeftAndRight(root.right, index + 1);
+// };
+
+// const topView = function () {
+//   const ans = [];
+//   findLeftAndRight(root, 0);
+//   const queue = [root];
+//   const index = [-1 * l];
+
+//   while (queue.length) {
+//     const first = queue.shift();
+//     const firstIndex = index.shift();
+//     if (!ans[firstIndex]) {
+//       ans[firstIndex] = first.value;
+//     }
+
+//     if (first.left) {
+//       queue.push(first.left);
+//       index.push(firstIndex - 1);
+//     }
+
+//     if (first.right) {
+//       queue.push(first.right);
+//       index.push(firstIndex + 1);
+//     }
+//   }
+//   console.log(ans);
+
+//   return ans;
+// };
+// // topView();
+
+// const bottomView = function () {
+//   findLeftAndRight(root, 0);
+//   const ans = [];
+//   const queue = [root];
+//   const index = [-1 * l];
+//   while (queue.length) {
+//     const first = queue.shift();
+//     const firstIndex = index.shift();
+
+//     ans[firstIndex] = first.value;
+//     if (first.left) {
+//       queue.push(first.left);
+//       index.push(firstIndex - 1);
+//     }
+
+//     if (first.right) {
+//       queue.push(first.right);
+//       index.push(firstIndex + 1);
+//     }
+//   }
+//   console.log(ans);
+// };
+
+// // bottomView();
+
+// // Trie DS
+// const prefixTree = {
+//   childrens: {
+//     a: {
+//       childrens: {
+//         p: {
+//           childrens: {
+//             p: {
+//               childrens: {
+//                 l: {
+//                   childrens: {
+//                     e: {
+//                       childrens: {},
+//                       wordEnd: true,
+//                     },
+//                   },
+//                   wordEnd: false,
+//                 },
+//               },
+//               wordEnd: false,
+//             },
+//           },
+//           wordEnd: false,
+//         },
+//       },
+//       wordEnd: true,
+//     },
+//   },
+//   wordEnd: false,
+// };
+
+// class Node {
+//   constructor(value, left, right) {
+//     this.value = value;
+//     this.left = left || null;
+//     this.right = right || null;
+//     this.height = 1;
+//   }
+// }
+
+const getHeight = function (node) {
+  if (!node) return 0;
+  return node.height;
+};
+
+const leftRotation = function (root) {
+  const rightChild = root.right;
+  const leftOfRightChild = rightChild.left;
+  root.right.left = root;
+  rightChild.left.right = leftOfRightChild;
+
+  root.height = 1 + Math.max(getHeight(root.left), getHeight(root.right));
+  rightChild.height = 1 + Math.max(getHeight(root.left), getHeight(root.right));
+
+  return rightChild;
+};
+
+const rightRotation = function (root) {
+  const leftChild = root.left;
+  const rightOfLeftChild = leftChild.right;
+
+  leftChild.right = root;
+  root.left = rightOfLeftChild; // leftChild.right.left
+
+  root.height = 1 + Math.max(getHeight(root.left), getHeight(root.right));
+  leftChild.height = 1 + Math.max(getHeight(root.left), getHeight(root.right));
+
+  return leftChild;
+};
+
+export const buildAVLTree = function (root, value) {
+  if (!root) {
+    return new Node(value);
+  }
+
+  if (root.value > value) {
+    root.left = buildAVLTree(root.left, value);
+  } else if (root.value < value) {
+    root.right = buildAVLTree(root.right, value);
+  }
+
+  root.height = 1 + Math.max(getHeight(root.left), getHeight(root.right));
+
+  const heightBalanced = getHeight(root.left) - getHeight(root.right);
+
+  // left - left
+  if (heightBalanced > 1 && root.left.value > value) {
+    return rightRotation(root);
+  }
+
+  // left-right
+  if (heightBalanced > 1 && root.left.value < value) {
+    root.left = leftRotation(root.left);
+    return rightRotation(root);
+  }
+
+  // right - right
+  if (heightBalanced < -1 && root.right.value < value) {
+    return leftRotation(root);
+  }
+
+  // right - left
+  if (heightBalanced < -1 && root.right.value > value) {
+    root.right = rightRotation(root.right);
+    return leftRotation(root);
+  }
+
+  return root;
+};
+
+// const inorder = function (root, ans) {
+//   if (!root) return;
+
+//   inorder(root.left, ans);
+//   ans.push(root.value);
+//   inorder(root.right, ans);
+// };
+
+// let rootAvl = null;
+// rootAvl = buildAVLTree(rootAvl, 30);
+// rootAvl = buildAVLTree(rootAvl, 60);
+// rootAvl = buildAVLTree(rootAvl, 80);
+// rootAvl = buildAVLTree(rootAvl, 10);
+
+// console.log(rootAvl);
+// const ans = [];
+// inorder(rootAvl, ans);
+// console.log(ans);
+
+// class SubtreeMetaData {
+//   constructor(value) {
+//     this.isBST = true;
+//     this.length = 1;
+//     this.min = value;
+//     this.max = value;
+//   }
+// }
+
+// class LargestBST {
+//   constructor({ length, rootValue, leftMin, leftMax, rightMin, rightMax }) {
+//     this.length = length;
+//     this.root = rootValue;
+//     this.leftMin = leftMin;
+//     this.leftMax = leftMax;
+//     this.rightMin = rightMin;
+//     this.rightMax = rightMax;
+//   }
+// }
+
+// let largestBST = null;
+
+// const calcLargestBST = function (root) {
+//   if (root.left === null && root.right === null) {
+//     if (largestBST && largestBST.length < 1) {
+//       largestBST = new LargestBST({
+//         length: 1,
+//         rootValue: root.value,
+//         leftMin: root.value,
+//         leftMax: root.value,
+//         rightMin: root.value,
+//         rightMax: root.value,
+//       });
+//     } else if (!largestBST) {
+//       largestBST = new LargestBST({
+//         length: 1,
+//         rootValue: root.value,
+//         leftMin: root.value,
+//         leftMax: root.value,
+//         rightMin: root.value,
+//         rightMax: root.value,
+//       });
+//     }
+//     return new SubtreeMetaData(root.value);
+//   }
+
+//   if (root.left && !root.right) {
+//     const leftSubtreeMetaData = calcLargestBST(root.left);
+//     if (leftSubtreeMetaData.isBST && leftSubtreeMetaData.max < root.value) {
+//       leftSubtreeMetaData.length++;
+
+//       if (largestBST.length < leftSubtreeMetaData.length) {
+//         largestBST = new LargestBST({
+//           length: leftSubtreeMetaData.length,
+//           rootValue: root.value,
+//           leftMin: leftSubtreeMetaData.min,
+//           leftMax: leftSubtreeMetaData.max,
+//           rightMin: NaN,
+//           rightMax: NaN,
+//         });
+//       }
+
+//       leftSubtreeMetaData.max = root.value;
+//       return leftSubtreeMetaData;
+//     } else {
+//       leftSubtreeMetaData.isBST = false;
+//       return leftSubtreeMetaData;
+//     }
+//   }
+
+//   if (!root.left && root.right) {
+//     const rightSubtreeMetaData = calcLargestBST(root.right);
+//     if (rightSubtreeMetaData.isBST && rightSubtreeMetaData.min > root.value) {
+//       rightSubtreeMetaData.length++;
+
+//       if (largestBST.length < rightSubtreeMetaData.length) {
+//         largestBST = new LargestBST({
+//           length: rightSubtreeMetaData.length,
+//           rootValue: root.value,
+//           leftMin: NaN,
+//           leftMax: NaN,
+//           rightMin: rightSubtreeMetaData.min,
+//           rightMax: rightSubtreeMetaData.max,
+//         });
+//       }
+//       rightSubtreeMetaData.min = root.value;
+//       return rightSubtreeMetaData;
+//     } else {
+//       rightSubtreeMetaData.isBST = false;
+//       return rightSubtreeMetaData;
+//     }
+//   }
+
+//   if (root.left && root.right) {
+//     const leftSubtreeMetaData = calcLargestBST(root.left);
+//     const rightSubtreeMetaData = calcLargestBST(root.right);
+
+//     if (
+//       leftSubtreeMetaData.isBST &&
+//       rightSubtreeMetaData.isBST &&
+//       leftSubtreeMetaData.max < root.value &&
+//       rightSubtreeMetaData.min > root.value
+//     ) {
+//       const subtreeMetaData = new SubtreeMetaData(root.value);
+//       subtreeMetaData.length =
+//         1 + leftSubtreeMetaData.length + rightSubtreeMetaData.length;
+//       subtreeMetaData.min = leftSubtreeMetaData.min;
+//       subtreeMetaData.max = rightSubtreeMetaData.max;
+
+//       if (largestBST.length < subtreeMetaData.length) {
+//         largestBST = new LargestBST({
+//           length: subtreeMetaData.length,
+//           rootValue: root.value,
+//           leftMin: leftSubtreeMetaData.min,
+//           leftMax: leftSubtreeMetaData.max,
+//           rightMin: rightSubtreeMetaData.min,
+//           rightMax: rightSubtreeMetaData.max,
+//         });
+//       }
+
+//       return subtreeMetaData;
+//     } else {
+//       leftSubtreeMetaData.isBST = false;
+//       return leftSubtreeMetaData;
+//     }
+//   }
+// };
+
+// const binaryTree = buildBinaryTreeWithBFS([
+//   10, 20, 30, 12, 19, 20, 40, -1, -1, -1, -1, 15, 25, 35, 45,
+// ]);
+
+// // console.log(binaryTree);
+// // const largest = calcLargestBST(binaryTree);
+// // console.log(largestBST);
+
+class Heap {
+  constructor(length) {
+    this.arr = [];
+    this.numOfElements = 0;
+    this.length = length;
+  }
+}
+
+const maxHeap = function (arr, index, length) {
+  let largest = index;
+  let left = 2 * index + 1;
+  let right = 2 * index + 2;
+
+  if (left < length && arr[left] >= arr[largest]) {
+    largest = left;
+  }
+
+  if (right < length && arr[right] >= arr[largest]) {
+    largest = right;
+  }
+
+  if (largest !== index) {
+    let temp = arr[largest];
+    arr[largest] = arr[index];
+    arr[index] = temp;
+    maxHeap(arr, largest, length);
+  }
+};
+
+const buildMaxHeap = function (arr) {
+  for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {
+    maxHeap(arr, i, arr.length);
+  }
+};
+
+const sortMaxHeap = function (arr) {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    let temp = arr[0];
+    arr[0] = arr[i];
+    arr[i] = temp;
+    maxHeap(arr, 0, i);
+  }
+};
+
+const arr = [10, 20, 13, 30, 25, 70, 45, 83, 20];
+// buildMaxHeap(arr);
+// sortMaxHeap(arr);
+
+// console.log(arr);
+
+// IELTS 1
+// https://lnkd.in/gCVEEA8a
+
+// IELTS 2
+// https://lnkd.in/gV2v3izY
+
+// IELTS 3
+// https://lnkd.in/gphxCgCA
+
+// GRE 1
+// https://lnkd.in/gJGTHeFv
+
+// GRE 2
+// https://lnkd.in/gd2pCqk2
+
+// GRE 3
+// https://lnkd.in/gphxCgCA
+
+// GMAT
+// https://lnkd.in/gtCdxjd3
+
+// TOEFL
+// https://lnkd.in/geKev8mY
+
+// 1/ The Pragmatic Programmer:
+// It'll teach you the core software development process.
+// Authors: Dave Thomas & Andy Hunt
+
+// 2/ The Mythical Man-Month:
+// It'll give you advice and opinions on the management of large-scale projects.
+// Author: Fred Brooks
+
+// 3/ Refactoring:
+// It'll give you techniques to restructure code to enhance its maintainability.
+// Authors: Kent Beck & Martin Fowler
+
+// 4/ Working Effectively with Legacy Code:
+// It'll teach you techniques to refactor legacy code.
+// Author: Michael C. Feathers
+
+// 5/ Clean Code:
+// It'll teach you practices to write code that is easy to understand and refactor.
+// Author: Robert C. Martin
+
+// 6/ Domain-Driven Design:
+// It'll teach you principles and patterns to design complex software systems.
+// Author: Eric Evans
+
+// 7/ Why Programs Fail:
+// It'll teach you systematic debugging.
+// Author: Andreas Zeller
+
+// 8/ Designing Data-Intensive Applications:
+// It'll teach you distributed systems.
+// Author: Martin Kleppmann
+
+// What else would you add?
+// Structure and Interpretation of Computer Programs, 2nd ed.
+// Statistics without Tears: An Introduction for Non-Mathematicians Rowntree, Derek
+// C Programming: A Modern Approach, 2nd Edition
+
+// ******* map vs forEach *********
+
+// map always takes the array and transform the array into something else - that something is whatever you told in the callback function and whatever you return from the callback for each iteration, it will place that return value into the new array. This will happen on every element of the given array.
+// After the iteration Map will give you the new array. Always returns a new array, no alteration happens in the original array.
+
+// In the case of forEach, it is an alternative of "for loop". In for loop we always write a line like this:
+// for(i = 0; i < 10; i++){} basically in forEach we don't have to write this line.
+// So now tell me, is there any possibility that this style of looping "for(i = 0; i < 10; i++){}" will give us a new array on every iteration magically? It can calculate something based on the code we write inside and only place the result of the calculation in the new array if we create a global variable outside of this and push that to that array on each iteration.
+
+// ******* map vs forEach *********
