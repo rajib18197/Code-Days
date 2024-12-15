@@ -11,14 +11,23 @@ class Tree {
   constructor(data) {
     this.data = data;
 
+    // for (let i = 0; i < this.data.length; i++) {
+    //   this.createNode(...this.data[i]);
+    // }
+
     for (let i = 0; i < this.data.length; i++) {
-      this.createNode(...this.data[i]);
+      for (let j = 0; j < this.data[i].length - 1; j++) {
+        this.createNode(this.data[i][j], this.data[i][j + 1]);
+      }
     }
   }
 
   createNode(parentName, childName) {
     const childNode = new Node(childName);
     const node = this.findNode(this.root, parentName);
+    const node2 = this.findNode(this.root, childName);
+
+    if (node && node2) return;
 
     if (!node) {
       this.root = new Node(parentName);
@@ -46,22 +55,56 @@ class Tree {
   }
 }
 
+// const data = [
+//   ["DSA", "Linked List"],
+//   ["DSA", "Stack"],
+//   ["Stack", "Design A Stack with Queue"],
+//   ["Linked List", "Doubly LL"],
+//   ["Doubly LL", "Reverse A Doubly LL"],
+//   ["Linked List", "Circular LL"],
+//   ["Circular LL", "Detect and Remove a Loop"],
+// ];
+
 const data = [
-  ["DSA", "Linked List"],
-  ["DSA", "Stack"],
-  ["Stack", "Disign A Stack with Queue"],
-  ["Linked List", "Doubly LL"],
-  ["Doubly LL", "Reverse A Doubly LL"],
-  ["Linked List", "Circular LL"],
-  ["Circular LL", "Detect and Remove a Loop"],
+  ["DSA", "Linked List", "Doubly LL", "Reverse A Doubly LL"],
+  ["DSA", "Linked List", "Circular LL", "Detect and Remove a Loop"],
+  ["DSA", "Stack", "Design A Stack with Queue"],
+];
+
+const data1 = [
+  [
+    "DSA",
+    {
+      "Linked List": [
+        "Doubly LL",
+        "Reverse A Doubly LL",
+        "Circular LL",
+        "Detect and Remove a Loop",
+      ],
+    },
+  ],
+  ["DSA", "Stack", "Design A Stack with Queue"],
 ];
 
 const tree = new Tree(data);
 // tree.createNode("DSA", "Linked List");
 // tree.createNode("DSA", "Stack");
-// tree.createNode("Stack", "Disign A Stack with Queue");
+// tree.createNode("Stack", "Design A Stack with Queue");
 // tree.createNode("Linked List", "Doubly LL");
 // tree.createNode("Doubly LL", "Reverse A Doubly LL");
 // tree.createNode("Linked List", "Circular LL");
 // tree.createNode("Circular LL", "Detect and Remove a Loop");
 console.log(tree.root);
+
+const formData = {
+  personalInfo: {
+    fullName: "",
+    email: "",
+    hasCompleted: false,
+  },
+  plan: {
+    list: [],
+    selected: "",
+    hasCompleted: false,
+  },
+};
