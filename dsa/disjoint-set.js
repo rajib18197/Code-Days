@@ -48,20 +48,3 @@ class DisjointSet {
     }
   }
 }
-
-const disjointSet = new DisjointSet(6);
-disjointSet.unionByRank(0, 1);
-disjointSet.unionByRank(1, 2);
-disjointSet.unionByRank(3, 4);
-if (disjointSet.findUltimateParent(4) === disjointSet.findUltimateParent(6)) {
-  console.log("same");
-} else {
-  console.log("Not Same");
-}
-disjointSet.unionByRank(4, 6);
-
-if (disjointSet.findUltimateParent(4) === disjointSet.findUltimateParent(6)) {
-  console.log("same");
-} else {
-  console.log("Not Same");
-}
