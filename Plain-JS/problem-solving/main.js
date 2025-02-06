@@ -75,3 +75,52 @@
 
 // const mixed = subset4([1, 2, 3], []);
 // console.log(mixed);
+
+class Tree {
+  constructor(data, left, right) {
+    this.data = data;
+    this.left = left || null;
+    this.right = right || null;
+  }
+}
+
+// const arr = [1, 2, 4, 5, -1, -1, -1, -1, 3, 10, -1, -1, -1];
+const arr = [1, 2, 4, -1, -1, 5, -1, -1, 3, 6, -1, -1, -1];
+
+let index = 0;
+const createTree = function (arr) {
+  if (arr[index] === -1) {
+    index += 1;
+    return null;
+  }
+
+  const node = new Tree(arr[index]);
+  index += 1;
+
+  node.left = createTree(arr);
+  node.right = createTree(arr);
+
+  return node;
+};
+
+const preOrderTraversal = function (root) {
+  if (root === null) {
+    return;
+  }
+
+  console.log(`${root.data} `);
+
+  if (root.left) {
+    console.log(`left child of ${root.data}: `);
+  }
+
+  preOrderTraversal(root.left);
+
+  if (root.right) {
+    console.log(`right child of ${root.data}: `);
+  }
+
+  preOrderTraversal(root.right);
+};
+
+preOrderTraversal(tree);
