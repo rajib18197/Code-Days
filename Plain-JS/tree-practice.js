@@ -9,10 +9,12 @@ class TreeNode {
 }
 
 class BinaryTree {
+  #queue;
+
   constructor(arr = []) {
-    this.queue = [...arr];
-    // this.root = this.buildTreeWithLevelOrder(this.queue);
-    this.root = this.buildTreeWithPreOrder(this.queue);
+    this.#queue = [...arr];
+    // this.root = this.buildTreeWithLevelOrder(this.#queue);
+    this.root = this.buildTreeWithPreOrder(this.#queue);
   }
 
   buildTreeWithLevelOrder(dataQueue) {
