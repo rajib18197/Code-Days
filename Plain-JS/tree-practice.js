@@ -30,12 +30,12 @@ class BinaryTree {
       const leftData = dataQueue.shift();
       const rightData = dataQueue.shift();
 
-      if (this.isValid(leftData)) {
+      if (this.#isValid(leftData)) {
         node.left = new TreeNode(leftData);
         nodeQueue.push(node.left);
       }
 
-      if (this.isValid(rightData)) {
+      if (this.#isValid(rightData)) {
         node.right = new TreeNode(rightData);
         nodeQueue.push(node.right);
       }
@@ -51,7 +51,7 @@ class BinaryTree {
 
     const data = dataQueue.shift();
 
-    if (!this.isValid(data)) {
+    if (!this.#isValid(data)) {
       return null;
     }
 
@@ -61,7 +61,7 @@ class BinaryTree {
     return node;
   }
 
-  isValid(value) {
+  #isValid(value) {
     const inValidValues = [-1, null, undefined];
     return inValidValues.every((inValidVal) => value !== inValidVal);
   }
@@ -82,35 +82,35 @@ class BinaryTree {
     return ans;
   }
 
-  inorderTraversal(node, ans) {
+  #inorderTraversal(node, ans) {
     if (!node) {
       return;
     }
 
-    this.inorderTraversal(node.left);
+    this.#inorderTraversal(node.left);
     ans.push(node.data);
-    this.inorderTraversal(node.right);
+    this.#inorderTraversal(node.right);
   }
 
   inorder() {
     const ans = [];
-    this.inorderTraversal(this.root, ans);
+    this.#inorderTraversal(this.root, ans);
     console.log(ans);
     return ans;
   }
 
-  postOrderTraversal(node, ans) {
+  #postOrderTraversal(node, ans) {
     if (!node) {
       return;
     }
-    this.postOrderTraversal(node.left, ans);
-    this.postOrderTraversal(node.right, ans);
+    this.#postOrderTraversal(node.left, ans);
+    this.#postOrderTraversal(node.right, ans);
     ans.push(node.data);
   }
 
   postOrder() {
     const ans = [];
-    this.postOrderTraversal(this.root, ans);
+    this.#postOrderTraversal(this.root, ans);
     console.log(ans);
     return ans;
   }
@@ -121,7 +121,6 @@ const init = function () {
   const arr = [1, 2, 3, 4, -1, -1, 5, -1, -1, 6, -1, -1, 10, 11, -1, -1, -1];
   const binaryTree = new BinaryTree(arr);
   binaryTree.preOrder();
-  // binaryTree.#preOrderTraversal();
 };
 
 init();
