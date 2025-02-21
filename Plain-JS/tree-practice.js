@@ -11,7 +11,8 @@ class TreeNode {
 class BinaryTree {
   constructor(arr = []) {
     this.queue = [...arr];
-    this.root = this.buildTreeWithLevelOrder(this.queue);
+    // this.root = this.buildTreeWithLevelOrder(this.queue);
+    this.root = this.buildTreeWithPreOrder(this.queue);
   }
 
   buildTreeWithLevelOrder(dataQueue) {
@@ -43,32 +44,84 @@ class BinaryTree {
     return root;
   }
 
+  buildTreeWithPreOrder(dataQueue) {
+    if (!dataQueue || dataQueue.length === 0) {
+      return null;
+    }
+
+    const data = dataQueue.shift();
+
+    if (!this.isValid(data)) {
+      return null;
+    }
+
+    const node = new TreeNode(data);
+    node.left = this.buildTreeWithPreOrder(dataQueue);
+    node.right = this.buildTreeWithPreOrder(dataQueue);
+    return node;
+  }
+
   isValid(value) {
     const inValidValues = [-1, null, undefined];
     return inValidValues.every((inValidVal) => value !== inValidVal);
   }
 
-  preOrderTraversal(node, ans) {
+  #preOrderTraversal(node, ans) {
     if (!node) {
       return;
     }
     ans.push(node.data);
-    this.preOrderTraversal(node.left, ans);
-    this.preOrderTraversal(node.right, ans);
+    this.#preOrderTraversal(node.left, ans);
+    this.#preOrderTraversal(node.right, ans);
   }
 
   preOrder() {
     const ans = [];
-    this.preOrderTraversal(this.root, ans);
+    this.#preOrderTraversal(this.root, ans);
+    console.log(ans);
+    return ans;
+  }
+
+  inorderTraversal(node, ans) {
+    if (!node) {
+      return;
+    }
+
+    this.inorderTraversal(node.left);
+    ans.push(node.data);
+    this.inorderTraversal(node.right);
+  }
+
+  inorder() {
+    const ans = [];
+    this.inorderTraversal(this.root, ans);
+    console.log(ans);
+    return ans;
+  }
+
+  postOrderTraversal(node, ans) {
+    if (!node) {
+      return;
+    }
+    this.postOrderTraversal(node.left, ans);
+    this.postOrderTraversal(node.right, ans);
+    ans.push(node.data);
+  }
+
+  postOrder() {
+    const ans = [];
+    this.postOrderTraversal(this.root, ans);
     console.log(ans);
     return ans;
   }
 }
 
 const init = function () {
-  const arr = [1, 2, 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, 10];
+  // const arr = [1, 2, 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, 10];
+  const arr = [1, 2, 3, 4, -1, -1, 5, -1, -1, 6, -1, -1, 10, 11, -1, -1, -1];
   const binaryTree = new BinaryTree(arr);
   binaryTree.preOrder();
+  // binaryTree.#preOrderTraversal();
 };
 
 init();
