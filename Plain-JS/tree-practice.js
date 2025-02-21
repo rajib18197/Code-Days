@@ -105,6 +105,7 @@ class BinaryTree {
     if (!node) {
       return;
     }
+
     this.#postOrderTraversal(node.left, ans);
     this.#postOrderTraversal(node.right, ans);
     ans.push(node.data);
@@ -144,14 +145,43 @@ class BinaryTree {
     console.log(ans);
     return ans;
   }
+
+  preOrderMorrisTraversal() {
+    const ans = [];
+    let node = this.root;
+
+    while (node) {
+      if (!node.left) {
+        ans.push(node.data);
+        node = node.right;
+      } else {
+        let currNode = node.left;
+        while (currNode.right && currNode.right !== node) {
+          currNode = currNode.right;
+        }
+
+        if (currNode.right === null) {
+          ans.push(node.data);
+          currNode.right = node;
+          node = node.left;
+        } else {
+          currNode.right = null;
+          node = node.right;
+        }
+      }
+    }
+
+    console.log(ans);
+    return ans;
+  }
 }
 
 const init = function () {
   // const arr = [1, 2, 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, 10];
   const arr = [1, 2, 3, 4, -1, -1, 5, -1, -1, 6, -1, -1, 10, 11, -1, -1, -1];
   const binaryTree = new BinaryTree(arr);
-  binaryTree.inorder();
-  binaryTree.inOrderMorrisTraversal();
+  binaryTree.preOrder();
+  binaryTree.preOrderMorrisTraversal();
 };
 
 init();
