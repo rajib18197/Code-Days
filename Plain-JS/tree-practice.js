@@ -219,4 +219,137 @@ const init = function () {
   binaryTree.postOrderMorrisTraversal();
 };
 
-init();
+// init();
+
+// class MaxHeap {
+//   constructor(totalLength) {
+//     this.arr = Array.from({ length: totalLength }, () => -1);
+//     this.totalLength = totalLength;
+//     this.curIndex = 0;
+//   }
+
+//   insert(value) {
+//     if (this.curIndex === this.totalLength) {
+//       return;
+//     }
+
+//     this.arr[this.curIndex] = value;
+//     let index = this.curIndex;
+//     this.curIndex++;
+
+//     let parent = Math.floor((index - 1) / 2);
+//     while (index > 0 && this.arr[index] > this.arr[parent]) {
+//       let temp = this.arr[index];
+//       this.arr[index] = this.arr[parent];
+//       this.arr[parent] = temp;
+//       index = parent;
+//       parent = Math.floor((index - 1) / 2);
+//     }
+//   }
+
+//   remove() {
+//     if (this.curIndex === 0) {
+//       return;
+//     }
+
+//     this.arr[0] = this.arr[this.curIndex - 1];
+//     this.arr[this.curIndex - 1] = 0;
+//     this.curIndex--;
+
+//     if (this.curIndex === 0) {
+//       return;
+//     }
+
+//     let index = 0;
+//     let largest = index;
+//     let left = index * 2 + 1;
+//     let right = index * 2 + 2;
+
+//     while (
+//       index < this.curIndex &&
+//       (this.arr[largest] < this.arr[left] ||
+//         this.arr[largest] < this.arr[right])
+//     ) {
+//       if (this.arr[largest] < this.arr[left]) {
+//         largest = left;
+//       }
+
+//       if (this.arr[largest] < this.arr[right]) {
+//         largest = right;
+//       }
+
+//       let temp = this.arr[index];
+//       this.arr[index] = this.arr[largest];
+//       this.arr[largest] = temp;
+
+//       index = largest;
+//       left = index * 2 + 1;
+//       right = index * 2 + 2;
+//     }
+//   }
+// }
+
+// const maxHeap = new MaxHeap(5);
+// maxHeap.insert(1);
+// maxHeap.insert(11);
+// maxHeap.insert(102);
+// maxHeap.insert(54);
+// maxHeap.insert(16);
+// maxHeap.remove();
+// maxHeap.remove();
+// console.log(maxHeap.arr);
+
+class MaxHeap {
+  constructor(arr) {
+    this.arr = arr;
+    this.buildHeap();
+  }
+
+  correctPlace(index, length) {
+    let largest = index;
+    let left = index * 2 + 1;
+    let right = index * 2 + 2;
+
+    while (
+      index < length &&
+      ((left < length && this.arr[largest] < this.arr[left]) ||
+        (right < length && this.arr[largest] < this.arr[right]))
+    ) {
+      if (left < length && this.arr[largest] < this.arr[left]) {
+        largest = left;
+      }
+
+      if (right < length && this.arr[largest] < this.arr[right]) {
+        largest = right;
+      }
+
+      let temp = this.arr[index];
+      this.arr[index] = this.arr[largest];
+      this.arr[largest] = temp;
+
+      index = largest;
+      left = index * 2 + 1;
+      right = index * 2 + 2;
+    }
+  }
+
+  buildHeap() {
+    for (let i = Math.floor(this.arr.length / 2) - 1; i >= 0; i--) {
+      this.correctPlace(i, this.arr.length);
+    }
+  }
+
+  sort() {
+    for (let i = this.arr.length - 1; i >= 0; i--) {
+      let temp = this.arr[0];
+      this.arr[0] = this.arr[i];
+      this.arr[i] = temp;
+      this.correctPlace(0, i);
+    }
+  }
+}
+
+const arr = [1, 100, 23, 26, 87];
+const maxHeap = new MaxHeap(arr);
+maxHeap.sort();
+console.log(maxHeap.arr);
