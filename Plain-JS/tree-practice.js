@@ -490,6 +490,7 @@ class DisjoinSet {
     }
   }
 }
+
 const isValid = function (row, col, grid) {
   return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
 };
@@ -572,4 +573,52 @@ const grid = [
   [0, 0, 1, 1, 1, 0],
 ];
 
-makeIslandLarge(grid);
+// makeIslandLarge(grid);
+
+const accountsMerge = function (accounts) {
+  const ds = new DisjoinSet(accounts.length);
+  const map = new Map();
+
+  for (let row = 0; row < accounts.length; row++) {
+    for (let col = 1; col < accounts[row].length; col++) {
+      if (map.has(accounts[row][col])) {
+        ds.unionBySize(row, map.get(accounts[row][col]));
+      } else {
+        map.set(accounts[row][col], row);
+      }
+    }
+  }
+  // console.log(ds.parent);
+  // console.log(map);
+
+  const arr = Array.from({ length: accounts.length }, () => []);
+
+  for (let [mail, node] of map) {
+    const ult_parent = ds.findUltimateParent(node);
+    arr[ult_parent].push(mail);
+  }
+
+  const ans = [];
+  for (let i = 0; i < arr.length; i++) {
+    const mails = [];
+    mails.push(accounts[i][0]);
+    for (let j = 0; j < arr[i].length; j++) {
+      mails.push(arr[i][j]);
+    }
+    if (mails.length === 1) {
+      ans.push([]);
+    } else {
+      ans.push(mails);
+    }
+  }
+  console.log(ans);
+};
+
+accountsMerge([
+  ["John", "j1@com", "j2@com", "j3@com"],
+  ["John", "j4@com"],
+  ["Raj", "r1@com", "r2@com"],
+  ["John", "j1@com", "j5@com"],
+  ["Raj", "r2@com", "r3@com"],
+  ["Mary", "m1@com"],
+]);
