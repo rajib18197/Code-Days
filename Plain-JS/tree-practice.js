@@ -209,17 +209,72 @@ class BinaryTree {
     console.log(ans);
     return ans;
   }
+
+  preOrderIterative() {
+    const stack = [];
+    stack.push(this.root);
+    const ans = [];
+
+    while (stack.length !== 0) {
+      const first = stack.pop();
+      ans.push(first.data);
+
+      if (first.right) {
+        stack.push(first.right);
+      }
+
+      if (first.left) {
+        stack.push(first.left);
+      }
+    }
+
+    console.log(ans);
+    return ans;
+  }
+
+  inorderIterative() {
+    const stack = [];
+    const visited = [];
+    stack.push(this.root);
+    visited.push(0);
+    const ans = [];
+
+    while (stack.length !== 0) {
+      const node = stack.pop();
+      const count = visited.pop();
+
+      if (count === 0) {
+        if (node.right) {
+          stack.push(node.right);
+          visited.push(0);
+        }
+
+        stack.push(node);
+        visited.push(1);
+
+        if (node.left) {
+          stack.push(node.left);
+          visited.push(0);
+        }
+      } else {
+        ans.push(node.data);
+      }
+    }
+
+    console.log(ans);
+    return ans;
+  }
 }
 
 const init = function () {
   // const arr = [1, 2, 3, 4, 5, 6, 7, -1, -1, 8, 9, -1, -1, -1, 10];
   const arr = [1, 2, 3, 4, -1, -1, 5, -1, -1, 6, -1, -1, 10, 11, -1, -1, -1];
   const binaryTree = new BinaryTree(arr);
-  binaryTree.postOrder();
-  binaryTree.postOrderMorrisTraversal();
+  binaryTree.inorder();
+  binaryTree.inorderIterative();
 };
 
-// init();
+init();
 
 // class MaxHeap {
 //   constructor(totalLength) {
@@ -349,7 +404,7 @@ class MaxHeap {
   }
 }
 
-const arr = [1, 100, 23, 26, 87];
-const maxHeap = new MaxHeap(arr);
-maxHeap.sort();
-console.log(maxHeap.arr);
+// const arr = [1, 100, 23, 26, 87];
+// const maxHeap = new MaxHeap(arr);
+// maxHeap.sort();
+// console.log(maxHeap.arr);
