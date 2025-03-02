@@ -264,6 +264,31 @@ class BinaryTree {
     console.log(ans);
     return ans;
   }
+
+  buildTreeWithPreAndIn(inorder, preorder, inStart, inEnd, index) {
+    if (inStart > inEnd) {
+      return null;
+    }
+
+    const node = new TreeNode(preorder[index]);
+    const nodeIndex = getIndex(inorder, node.data, inStart, inEnd);
+    node.left = this.buildTreeWithPreAndIn(
+      inorder,
+      preorder,
+      inStart,
+      nodeIndex - 1,
+      index + 1
+    );
+    node.right = this.buildTreeWithPreAndIn(
+      inorder,
+      preorder,
+      nodeIndex + 1,
+      inEnd,
+      index + (nodeIndex - inStart) + 1
+    );
+
+    return node;
+  }
 }
 
 const init = function () {
@@ -271,7 +296,8 @@ const init = function () {
   const arr = [1, 2, 3, 4, -1, -1, 5, -1, -1, 6, -1, -1, 10, 11, -1, -1, -1];
   const binaryTree = new BinaryTree(arr);
   binaryTree.inorder();
-  binaryTree.inorderIterative();
+  binaryTree.preOrder();
+  binaryTree.postOrder();
 };
 
 init();
