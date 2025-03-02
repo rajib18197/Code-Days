@@ -300,7 +300,7 @@ const init = function () {
   binaryTree.postOrder();
 };
 
-init();
+// init();
 
 // class MaxHeap {
 //   constructor(totalLength) {
@@ -434,3 +434,142 @@ class MaxHeap {
 // const maxHeap = new MaxHeap(arr);
 // maxHeap.sort();
 // console.log(maxHeap.arr);
+
+class DisjoinSet {
+  constructor(totalLength) {
+    this.parent = Array.from({ length: totalLength }, (_, i) => i);
+    this.rank = Array.from({ length: totalLength }, () => 1);
+    this.size = Array.from({ length: totalLength }, () => 1);
+  }
+
+  findUltimateParent(vertex) {
+    if (this.parent[vertex] === vertex) {
+      return vertex;
+    }
+
+    return (this.parent[vertex] = this.findUltimateParent(this.parent[vertex]));
+  }
+
+  unionByRank(u, v) {
+    const ult_parent_u = this.findUltimateParent(u);
+    const ult_parent_v = this.findUltimateParent(v);
+
+    if (ult_parent_u === ult_parent_v) {
+      return;
+    }
+
+    if (this.rank[ult_parent_u] === this.rank[ult_parent_v]) {
+      this.parent[ult_parent_u] = ult_parent_v;
+      this.rank[ult_parent_v]++;
+    } else if (this.rank[ult_parent_u] < this.rank[ult_parent_v]) {
+      this.parent[ult_parent_u] = ult_parent_v;
+    } else {
+      // this.rank(ult_parent_u > this.rank[ult_parent_v])
+      this.parent[ult_parent_v] = ult_parent_u;
+    }
+  }
+
+  unionBySize(u, v) {
+    const ult_parent_u = this.findUltimateParent(u);
+    const ult_parent_v = this.findUltimateParent(v);
+
+    if (ult_parent_u === ult_parent_v) {
+      return;
+    }
+
+    if (this.size[ult_parent_u] === this.size[ult_parent_v]) {
+      this.parent[ult_parent_u] = ult_parent_v;
+      this.size[ult_parent_v]++;
+    } else if (this.size[ult_parent_u] < this.size[ult_parent_v]) {
+      this.parent[ult_parent_u] = ult_parent_v;
+      this.size[ult_parent_v]++;
+    } else {
+      // this.size[ult_parent_u] > this.size[ult_parent_v]
+      this.parent[ult_parent_v] = ult_parent_u;
+      this.size[ult_parent_u]++;
+    }
+  }
+}
+const isValid = function (row, col, grid) {
+  return row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
+};
+
+const makeIslandLarge = function (grid) {
+  const ds = new DisjoinSet(grid.length * grid[0].length);
+
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[0].length; col++) {
+      if (grid[row][col] === 0) {
+        continue;
+      }
+
+      const dr = [-1, 0, 1, 0];
+      const dc = [0, 1, 0, -1];
+
+      for (let i = 0; i < 4; i++) {
+        if (isValid(dr[i] + row, dc[i] + col, grid)) {
+          const rowNode = row * grid[0].length + col;
+          const neighbourNode = (row + dr[i]) * grid[0].length + (col + dc[i]);
+          if (grid[row + dr[i]][col + dc[i]] === 1) {
+            if (
+              ds.findUltimateParent(rowNode) !==
+              ds.findUltimateParent(neighbourNode)
+            ) {
+              ds.unionBySize(rowNode, neighbourNode);
+            }
+          }
+        }
+      }
+    }
+  }
+  // for (let i = 0; i < ds.parent.length; i++) {
+  //   console.log(`${i} -> ${ds.parent[i]}`);
+  // }
+
+  let maxSize = 0;
+
+  for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[0].length; col++) {
+      if (grid[row][col] === 1) {
+        continue;
+      }
+
+      const dr = [-1, 0, 1, 0];
+      const dc = [0, 1, 0, -1];
+      const set = new Set();
+
+      for (let i = 0; i < 4; i++) {
+        if (
+          isValid(dr[i] + row, dc[i] + col, grid) &&
+          grid[row + dr[i]][col + dc[i]] === 1
+        ) {
+          const adjNode = (row + dr[i]) * grid[0].length + (col + dc[i]);
+          const ult_parent_adjNode = ds.findUltimateParent(adjNode);
+          set.add(ult_parent_adjNode);
+        }
+      }
+      let totalSize = 1;
+      for (let vertex of set) {
+        const size = ds.size[vertex];
+        totalSize += size;
+      }
+
+      if (maxSize < totalSize) {
+        maxSize = totalSize;
+      }
+    }
+  }
+  console.log(maxSize);
+  return maxSize;
+};
+
+const grid = [
+  [1, 1, 0, 1, 1, 0],
+  [1, 1, 0, 1, 1, 0],
+  [1, 1, 0, 1, 1, 0],
+  [0, 0, 1, 0, 0, 0],
+  [0, 0, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 0],
+];
+
+makeIslandLarge(grid);
