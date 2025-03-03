@@ -614,11 +614,54 @@ const accountsMerge = function (accounts) {
   console.log(ans);
 };
 
-accountsMerge([
-  ["John", "j1@com", "j2@com", "j3@com"],
-  ["John", "j4@com"],
-  ["Raj", "r1@com", "r2@com"],
-  ["John", "j1@com", "j5@com"],
-  ["Raj", "r2@com", "r3@com"],
-  ["Mary", "m1@com"],
-]);
+// accountsMerge([
+//   ["John", "j1@com", "j2@com", "j3@com"],
+//   ["John", "j4@com"],
+//   ["Raj", "r1@com", "r2@com"],
+//   ["John", "j1@com", "j5@com"],
+//   ["Raj", "r2@com", "r3@com"],
+//   ["Mary", "m1@com"],
+// ]);
+
+const editDistance = function (i, j, str1, str2, cache) {
+  if (i === 0) {
+    return j;
+  }
+
+  if (j === 0) {
+    return i;
+  }
+
+  if (cache[i][j] !== -1) {
+    return cache[i][j];
+  }
+
+  if (str1[i - 1] === str2[j - 1]) {
+    return (cache[i][j] = editDistance(i - 1, j - 1, str1, str2, cache));
+  }
+
+  return (cache[i][j] = Math.min(
+    1 + editDistance(i, j - 1, str1, str2, cache),
+    Math.min(
+      1 + editDistance(i - 1, j, str1, str2, cache),
+      1 + editDistance(i - 1, j - 1, str1, str2, cache)
+    )
+  ));
+};
+
+const calcEditDistance = function (str1, str2) {
+  const cache = Array.from({ length: str1.length + 1 }, () =>
+    Array.from({ length: str2.length + 1 }, () => -1)
+  );
+  const minOperations = editDistance(
+    str1.length,
+    str2.length,
+    str1,
+    str2,
+    cache
+  );
+  console.log(minOperations);
+  console.log(cache);
+};
+
+calcEditDistance("intention", "execution");
