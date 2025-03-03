@@ -676,21 +676,25 @@ const editDistanceTabulation = function (str1, str2) {
   }
 
   console.log(cache);
+  console.log(cache[str1.length][str2.length]);
+  return cache[str1.length][str2.length];
 };
 
 const calcEditDistance = function (str1, str2) {
   const cache = Array.from({ length: str1.length + 1 }, () =>
     Array.from({ length: str2.length + 1 }, () => -1)
   );
-  const minOperations = editDistance(
-    str1.length,
-    str2.length,
-    str1,
-    str2,
-    cache
-  );
-  console.log(minOperations);
-  console.log(cache);
+  // const minOperations = editDistance(
+  //   str1.length,
+  //   str2.length,
+  //   str1,
+  //   str2,
+  //   cache
+  // );
+
+  const minOperations = editDistanceTabulation(str1, str2);
+  // console.log(minOperations);
+  // console.log(cache);
 };
 
 calcEditDistance("intention", "execution");
