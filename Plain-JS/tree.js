@@ -702,4 +702,44 @@ const grid = [
   [0, 0, 1, 1, 1, 0],
 ];
 
-makeIslandLarge(grid);
+// makeIslandLarge(grid);
+
+const accountsMerge = function (accounts) {
+  const ds = new DisjoinSet(accounts.length);
+  const mapMailToNode = new Map();
+
+  for (let i = 0; i < accounts.length; i++) {
+    for (let j = 1; j < accounts[i].length; j++) {
+      if (mapMailToNode.has(accounts[i][j])) {
+        ds.unionByRank(i, mapMailToNode.get(accounts[i][j]));
+      } else {
+        mapMailToNode.set(accounts[i][j], i);
+      }
+    }
+  }
+
+  const arr = Array.from({ length: accounts.length }, () => []);
+
+  for (let [mail, node] of mapMailToNode) {
+    const parent = ds.findUltimateParent(node);
+    arr[parent].push(mail);
+  }
+
+  const ans = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    const mails = [accounts[i][0]];
+    for (let j = 0; j < arr[i].length; j++) {
+      mails.push(arr[i][j]);
+    }
+
+    if (mails.length === 1) {
+      ans.push([]);
+    } else {
+      ans.push(mails);
+    }
+  }
+
+  console.log(ans);
+  return ans;
+};
