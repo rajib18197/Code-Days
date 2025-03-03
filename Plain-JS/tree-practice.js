@@ -649,6 +649,35 @@ const editDistance = function (i, j, str1, str2, cache) {
   ));
 };
 
+const editDistanceTabulation = function (str1, str2) {
+  const cache = Array.from({ length: str1.length + 1 }, () =>
+    Array.from({ length: str2.length + 1 }, () => 0)
+  );
+
+  for (let j = 0; j < str2.length + 1; j++) {
+    cache[0][j] = j;
+  }
+
+  for (let i = 0; i < str1.length + 1; i++) {
+    cache[i][0] = i;
+  }
+
+  for (let i = 1; i < str1.length + 1; i++) {
+    for (let j = 1; j < str2.length + 1; j++) {
+      if (str1[i - 1] === str2[j - 1]) {
+        cache[i][j] = cache[i - 1][j - 1];
+      } else {
+        cache[i][j] = Math.min(
+          1 + cache[i][j - 1],
+          Math.min(1 + cache[i - 1][j], 1 + cache[i - 1][j - 1])
+        );
+      }
+    }
+  }
+
+  console.log(cache);
+};
+
 const calcEditDistance = function (str1, str2) {
   const cache = Array.from({ length: str1.length + 1 }, () =>
     Array.from({ length: str2.length + 1 }, () => -1)
