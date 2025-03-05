@@ -72,9 +72,10 @@ const init = function () {
 // init();
 
 class PriorityQueue {
-  constructor(totalLength) {
+  constructor(totalLength, comparator) {
     this.arr = Array.from({ length: totalLength }, () => []);
     this.totalLength = totalLength;
+    this.comparator = comparator;
     this.curr = 0;
   }
 
@@ -83,14 +84,15 @@ class PriorityQueue {
       return;
     }
 
-    this.arr[this.curr] = [...value];
+    this.arr[this.curr] = Array.isArray(value) ? [...value] : value;
     let index = this.curr;
     this.curr++;
 
     let child = index;
     let parent = Math.floor((child - 1) / 2);
 
-    while (parent >= 0 && this.arr[child][0] < this.arr[parent][0]) {
+    // this.arr[parent][0] > this.arr[child][0]
+    while (parent >= 0 && this.comparator(this.arr, parent, child)) {
       let temp = this.arr[child];
       this.arr[child] = this.arr[parent];
       this.arr[parent] = temp;
@@ -119,15 +121,17 @@ class PriorityQueue {
     let left = smallest * 2 + 1;
     let right = smallest * 2 + 2;
 
+    //   (left < this.curr && this.arr[smallest][0] > this.arr[left][0]) ||
+    //   (right < this.curr && this.arr[smallest][0] > this.arr[right][0])
     while (
-      (left < this.curr && this.arr[smallest][0] > this.arr[left][0]) ||
-      (right < this.curr && this.arr[smallest][0] > this.arr[right][0])
+      (left < this.curr && this.comparator(this.arr, smallest, left)) ||
+      (right < this.curr && this.comparator(this.arr, smallest, right))
     ) {
-      if (left < this.curr && this.arr[smallest][0] > this.arr[left][0]) {
+      if (left < this.curr && this.comparator(this.arr, smallest, left)) {
         smallest = left;
       }
 
-      if (right < this.curr && this.arr[smallest][0] > this.arr[right][0]) {
+      if (right < this.curr && this.comparator(this.arr, smallest, right)) {
         smallest = right;
       }
 
@@ -159,7 +163,12 @@ const createGraph = function (V, edges) {
 const calcMinimumSpanningTree = function (V, edges) {
   const graph = createGraph(V, edges);
 
-  const pq = new PriorityQueue(edges.length);
+  // min heap
+  const pq = new PriorityQueue(
+    edges.length,
+    (arr, first, second) => arr[first][0] > arr[second][0]
+  );
+
   const visited = Array.from({ length: V }, () => 0);
 
   pq.push([0, 0, -1]);
@@ -201,3 +210,20 @@ calcMinimumSpanningTree(5, [
   [1, 4, 5],
   [4, 2, 7],
 ]);
+
+// max heap
+const pq = new PriorityQueue(
+  5,
+  (arr, first, second) => arr[first] < arr[second]
+);
+
+pq.push(100);
+pq.push(200);
+pq.push(0);
+pq.push(-100);
+pq.push(343);
+console.log(pq.remove());
+console.log(pq.remove());
+console.log(pq.remove());
+console.log(pq.remove());
+console.log(pq.remove());
