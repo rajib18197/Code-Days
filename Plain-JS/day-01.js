@@ -18,6 +18,35 @@ const maxPriceMemoization = function (index, maxWeight, wt, val, cache) {
   return (cache[index][maxWeight] = notTake > take ? notTake : take);
 };
 
+const maxPriceTabulation = function (wt, val, maxWeight) {
+  //   const cache = Array.from({ length: wt.length }, () =>
+  //     Array.from({ length: maxWeight + 1 }, () => 0)
+  //   );
+
+  let prev = Array.from({ length: maxWeight + 1 }, () => 0);
+  //   const curr = Array.from({ length: maxWeight + 1 }, () => 0);
+
+  for (let w = wt[0]; w <= maxWeight; w++) {
+    prev[w] = val[0];
+  }
+
+  for (let index = 1; index < val.length; index++) {
+    for (let w = maxWeight; w >= 0; w--) {
+      const notTake = 0 + prev[w];
+      let take = -1e9;
+      if (wt[index] <= w) {
+        take = val[index] + prev[w - wt[index]];
+      }
+      prev[w] = notTake > take ? notTake : take;
+    }
+
+    // must have done deep copy
+    // prev = [...curr];
+  }
+
+  console.log(prev);
+};
+
 const calcMaxPrice = function (wt, val, maxWeight) {
   const cache = Array.from({ length: val.length }, () =>
     Array.from({ length: maxWeight + 1 }, () => -1)
@@ -36,7 +65,8 @@ const calcMaxPrice = function (wt, val, maxWeight) {
 const init = function () {
   const wt = [1, 2, 4, 5];
   const val = [5, 4, 8, 6];
-  calcMaxPrice(wt, val, 5);
+  //   calcMaxPrice(wt, val, 5);
+  maxPriceTabulation(wt, val, 5);
 };
 
 init();
