@@ -43,15 +43,45 @@ const calcTopologicalSort = function (numOfVertices, edges) {
   return ans;
 };
 
-const init = () => {
-  calcTopologicalSort(6, [
-    [5, 0],
-    [4, 0],
-    [5, 2],
-    [2, 3],
-    [3, 1],
-    [4, 1],
+const quiz = function () {
+  const question = new Map([
+    ["name", "What is the best programming language in the world?"],
+    [1, "C"],
+    [2, "Rust"],
+    [3, "JavaScript"],
+    ["answer", 3],
+    [true, "Correct Answer"],
+    [false, "Try Again"],
   ]);
+
+  //   console.log(question.get("name"));
+  //   for (const [key, value] of question) {
+  //     if (typeof key === "number") {
+  //       console.log(value);
+  //     }
+  //   }
+
+  const answer = 3;
+
+  const result = question.get(question.get("answer") === answer);
+  //   console.log(result);
+  question.set([1, 2], "array");
+  console.log([...question.keys()]);
+  console.log([...question.values()]);
+  console.log([...question.entries()]);
+};
+
+const init = () => {
+  //   calcTopologicalSort(6, [
+  //     [5, 0],
+  //     [4, 0],
+  //     [5, 2],
+  //     [2, 3],
+  //     [3, 1],
+  //     [4, 1],
+  //   ]);
+
+  quiz();
 };
 
 init();
