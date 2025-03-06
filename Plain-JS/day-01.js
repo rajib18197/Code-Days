@@ -151,8 +151,7 @@ class PriorityQueue {
 const createGraph = function (V, edges) {
   const adj = Array.from({ length: V }, () => []);
 
-  for (let i = 0; i < edges.length; i++) {
-    const [u, v, weight] = edges[i];
+  for (const [u, v, weight] of edges) {
     adj[u].push([v, weight]);
     adj[v].push([u, weight]);
   }
