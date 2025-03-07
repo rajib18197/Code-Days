@@ -39,19 +39,56 @@ void merge(int arr1[], int arr2[], int mergedArr[], int n, int m){
 
 }
 
+void fahrCelTable(){
+    int lower = 0;
+    int upper = 300;
+    int incrementBy = 20;
+    int fahrenheight = lower;
+    int celcious;
+    while(fahrenheight <= upper){
+        celcious = 5 * (fahrenheight - 32) / 9;
+        printf("%d\t%d\n", fahrenheight, celcious);
+        fahrenheight += incrementBy; 
+    }
+}
+
+void calcExtras(int bills[], int totalLength){
+    int extras[totalLength];
+    int totalValues[totalLength];
+    for(int i = 0; i < totalLength; i++){
+        if(bills[i] >= 50 && bills[i] <= 300){
+            totalValues[i] = bills[i] + (0.15 * bills[i]);
+            extras[i] = 0.15 * bills[i];
+        }else{
+            totalValues[i] = bills[i] + (0.20 * bills[i]);
+            extras[i] = 0.20 * bills[i];
+        }
+    }
+
+    for(int i = 0; i < totalLength; i++){
+        printf("BillValue: %d, ExtraValue: %d, totalValue: %d\n", bills[i], extras[i], totalValues[i]);
+    }
+}
+
 int main(){
 //    char str[100];
 //    int n = input(str, 5);
-//    printf("Here is %d %s", n, str);
+//    printf("Here is %d %s\n", n, str);
 
-   int arr1[4] = {10, 20, 30, 40};
-   int arr2[4] = {15, 25, 35, 45};
-   int mergedArr[sizeof(arr1) / sizeof(arr1[0]) +sizeof(arr2) / sizeof(arr2[0])];
+//    int arr1[4] = {10, 20, 30, 40};
+//    int arr2[4] = {15, 25, 35, 45};
+//    int mergedArr[sizeof(arr1) / sizeof(arr1[0]) +sizeof(arr2) / sizeof(arr2[0])];
 
-   merge(arr1, arr2, mergedArr, 4, 4);
-   for(int i = 0; i < sizeof(mergedArr) / sizeof(mergedArr[0]); i++){
-    printf("%d ",mergedArr[i]);
-   }
+//    merge(arr1, arr2, mergedArr, 4, 4);
+//    for(int i = 0; i < sizeof(mergedArr) / sizeof(mergedArr[0]); i++){
+//     printf("%d ",mergedArr[i]);
+//    }
+
+    // fahrCelTable();
+
+    int bills[3] = {125, 555, 44};
+    int totalLength = sizeof(bills) / sizeof(bills[0]);
+    calcExtras(bills, totalLength);
    return 0;
 }
 
