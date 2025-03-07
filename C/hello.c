@@ -1,5 +1,5 @@
 #include<stdio.h>
-
+#include<string.h>
 int input(char str[], int n){
     int ch, i = 0;
 
@@ -70,6 +70,32 @@ void calcExtras(int bills[], int totalLength){
     }
 }
 
+void isPalindrome(){
+    char str1[100];
+
+    printf("Enter a string: ");
+    gets(str1);
+    int count = 0;
+    for(int i = 0; str1[i] != '\0'; i++){
+        count++;
+    }
+    printf("%d\n", count);
+    char str2[100];
+    int j = 0;
+    for(int i = count - 1; i >= 0; i--){
+        str2[j] = str1[i];
+        j++;
+    }
+    str2[j] = '\0';
+    printf("%s %s\n", str1, str2);
+
+    if(strcmp(str1, str2) == 0){
+        printf("%s is a palimdrome", str1);
+    }else{
+        printf("%s is not a palimdrome", str1);
+    }
+}
+
 int main(){
 //    char str[100];
 //    int n = input(str, 5);
@@ -86,9 +112,11 @@ int main(){
 
     // fahrCelTable();
 
-    int bills[3] = {125, 555, 44};
-    int totalLength = sizeof(bills) / sizeof(bills[0]);
-    calcExtras(bills, totalLength);
+    // int bills[3] = {125, 555, 44};
+    // int totalLength = sizeof(bills) / sizeof(bills[0]);
+    // calcExtras(bills, totalLength);
+
+    isPalindrome();
    return 0;
 }
 
