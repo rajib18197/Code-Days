@@ -14,10 +14,6 @@ int main(){
 
     printf("\n");
 
-    // for(int i = 0; i < numberOfElements; i++){
-    //     printf("%d ", nums[i]);
-    // }
-
     int evenNums[numberOfElements];
     int oddNums[numberOfElements];
     int even_i = 0;
