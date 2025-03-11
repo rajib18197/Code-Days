@@ -116,21 +116,64 @@ class NStack{
         }
 };
 
+class Solution {
+public:
+    vector<string> buildArray(vector<int>& target, int n) {
+       stack<int> s;
+       vector<string> ans;
+       int j = 0;
+       int i = 1;
+       while(i <= n){
+        if(i == 1 || s.empty()){
+          s.push(i);
+          ans.push_back("Push");
+          i++;
+          if(s.top() == target[j] && target.size() == s.size()){
+              return ans;
+          }
+        }else{
+          if(s.top() == target[j]){
+            s.push(i);
+            ans.push_back("Push");
+            j++;
+            i++;
+            if(s.top() == target[j] && target.size() == s.size()){
+              return ans;
+            }
+          }else{
+            s.pop();
+            ans.push_back("Pop");
+            if(j == 0){
+
+            }else{
+              j--;
+            }
+          }
+        }
+       } 
+
+       return ans;
+    }
+};
+
 int main(){
-    NStack data(10, 3);
-    cout << data.push(10, 0) << endl;
-    cout << data.push(20, 1) << endl;
-    cout << data.push(300, 2) << endl;
-    cout << data.push(1000, 0) << endl;
-    cout << data.push(30, 2) << endl;
-    cout << data.push(200, 1) << endl;
-    cout << data.push(3000, 2) << endl;
-    cout << data.push(2000, 1) << endl;
-    cout << data.push(2000, 1) << endl;
-    cout << data.push(1, 0) << endl;
-    cout << "Removal Start: " << endl;
-    cout << data.remove(0) << endl;
-    cout << data.remove(0) << endl;
+    Solution solution;
+    vector<int> v = {1, 3};
+    solution.buildArray(v, 3);
+    // NStack data(10, 3);
+    // cout << data.push(10, 0) << endl;
+    // cout << data.push(20, 1) << endl;
+    // cout << data.push(300, 2) << endl;
+    // cout << data.push(1000, 0) << endl;
+    // cout << data.push(30, 2) << endl;
+    // cout << data.push(200, 1) << endl;
+    // cout << data.push(3000, 2) << endl;
+    // cout << data.push(2000, 1) << endl;
+    // cout << data.push(2000, 1) << endl;
+    // cout << data.push(1, 0) << endl;
+    // cout << "Removal Start: " << endl;
+    // cout << data.remove(0) << endl;
+    // cout << data.remove(0) << endl;
     // TwoStack stack(5);
     // stack.push1(10);
     // stack.push1(20);
@@ -173,3 +216,4 @@ int main(){
     // age = 25;
     // cout << &age << " " << &oldAge << " " << age << " " << oldAge << endl;
 }
+
