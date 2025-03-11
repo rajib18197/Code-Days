@@ -129,7 +129,9 @@ int main(){
     // calcExtras(bills, totalLength);
 
     // isPalindrome();
-    calc_memory();
+    // calc_memory();
+      char ch[5] = "world";
+        printf("%s", ch);
    return 0;
 }
 
