@@ -84,4 +84,4 @@ const init = () => {
   quiz();
 };
 
-init();
+// init();

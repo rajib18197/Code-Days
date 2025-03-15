@@ -79,6 +79,10 @@ class PriorityQueue {
     this.curr = 0;
   }
 
+  top() {
+    return this.arr[0];
+  }
+
   push(value) {
     if (this.curr === this.totalLength) {
       return;
@@ -201,28 +205,30 @@ const calcMinimumSpanningTree = function (V, edges) {
   return { mstEdges: mst, totalWeight: mstSum };
 };
 
-calcMinimumSpanningTree(5, [
-  [0, 1, 2],
-  [0, 3, 6],
-  [1, 2, 3],
-  [1, 3, 8],
-  [1, 4, 5],
-  [4, 2, 7],
-]);
+// calcMinimumSpanningTree(5, [
+//   [0, 1, 2],
+//   [0, 3, 6],
+//   [1, 2, 3],
+//   [1, 3, 8],
+//   [1, 4, 5],
+//   [4, 2, 7],
+// ]);
 
 // max heap
-const pq = new PriorityQueue(
-  5,
-  (arr, first, second) => arr[first] < arr[second]
-);
+// const pq = new PriorityQueue(
+//   5,
+//   // (arr, first, second) => arr[first] < arr[second]
+//   // min
+//   (arr, first, second) => arr[first] > arr[second]
+// );
 
-pq.push(100);
-pq.push(200);
-pq.push(0);
-pq.push(-100);
-pq.push(343);
-console.log(pq.remove());
-console.log(pq.remove());
-console.log(pq.remove());
-console.log(pq.remove());
-console.log(pq.remove());
+// pq.push(100);
+// pq.push(200);
+// pq.push(0);
+// pq.push(-100);
+// pq.push(343);
+// console.log(pq.remove());
+// console.log(pq.remove());
+// console.log(pq.remove());
+// console.log(pq.remove());
+// console.log(pq.remove());
