@@ -156,10 +156,67 @@ public:
     }
 };
 
+
+void floorNCeil(){
+    int x = 706636307 ;
+    int n = 0;
+    int m = 3;
+    int a = n, b = m;
+    int min, max;
+    int curr = x;
+    while(a--){
+        curr = curr / 2;
+        // cout << a << " " << b << endl;
+    }
+    while(b--){
+        curr = (curr / 2) + (curr % 2);
+    }
+
+    min = curr;
+    curr = x;
+    a = n, b = m;
+    int flag = 1;
+    // cout << a << " " << b << endl;
+    while(true){
+        // cout << a << " " << b << endl;
+        if(flag == 1 && b){
+            curr = (curr / 2) + (curr % 2);
+            flag = 0;
+            b--;
+            continue;
+        }
+
+        if(flag == 0 && a){
+            curr = (curr / 2) + (curr % 2);
+            flag = 1;
+            a--;
+            continue;
+        }
+        if(a > 0 && b <= 0){
+            curr = (curr / 2) + (curr % 2);
+            a--;
+            continue;
+        }
+
+        if(a <= 0 && b > 0){
+            curr = (curr / 2) + (curr % 2);
+            b--;
+            continue;
+        }
+        max = curr;
+        break;
+    }
+
+    cout << max << " " << min << endl;
+}
+// 88329539 88329539
+// 88329539 88329538
+// g++ practice.cpp -o practice
 int main(){
-    Solution solution;
-    vector<int> v = {1, 3};
-    solution.buildArray(v, 3);
+    floorNCeil();
+    // Solution solution;
+    // vector<int> v = {1, 3};
+    // solution.buildArray(v, 3);
     // NStack data(10, 3);
     // cout << data.push(10, 0) << endl;
     // cout << data.push(20, 1) << endl;
