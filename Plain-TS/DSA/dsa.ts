@@ -76,3 +76,8 @@ class DisjointSet {
 
 const ds: DisjointSet = new DisjointSet(3);
 ds.unionByRank(1, 2);
+
+// const arr: Array<(number, number)> = [1, 2];
+let arr: [number, number];
+
+arr = [1, 2];
