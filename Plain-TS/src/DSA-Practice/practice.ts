@@ -1,23 +1,21 @@
-type PrimitiveBSTFromPreorder<T> = {
+type PrimitiveBSTFromPreorder = {
   mode: "primitive";
-  preorder: T[];
-  index: [number];
-  lower: number;
-  upper: number;
 };
 
 type ReferenceBSTFromPreorder<T> = {
   mode: "reference";
+  key: keyof T;
+};
+
+type BSTFromPreorderProps<T> = (
+  | PrimitiveBSTFromPreorder
+  | ReferenceBSTFromPreorder<T>
+) & {
   preorder: T[];
   index: [number];
   lower: number;
   upper: number;
-  key: keyof T;
 };
-
-type BSTFromPreorderProps<T> =
-  | PrimitiveBSTFromPreorder<T>
-  | ReferenceBSTFromPreorder<T>;
 
 class NodeBST<T> {
   constructor(
@@ -54,7 +52,7 @@ const constructBSTFromPreorder = function <T>(props: BSTFromPreorderProps<T>) {
   props.index[0] = props.index[0] + 1;
   const node = new NodeBST(value);
 
-  const leftProps =
+  const leftProps: BSTFromPreorderProps<T> =
     props.mode === "primitive"
       ? { ...props, upper: comparator(node.data, undefined) }
       : {
@@ -63,17 +61,17 @@ const constructBSTFromPreorder = function <T>(props: BSTFromPreorderProps<T>) {
           upper: comparator(node.data, props.key),
         };
 
-  const rightProps =
+  const rightProps: BSTFromPreorderProps<T> =
     props.mode === "primitive"
-      ? ({
+      ? {
           ...props,
           lower: comparator(node.data, undefined),
-        } as PrimitiveBSTFromPreorder<T>)
-      : ({
+        }
+      : {
           ...props,
           key: props.key,
           lower: comparator(node.data, props.key),
-        } as ReferenceBSTFromPreorder<T>);
+        };
 
   node.left = constructBSTFromPreorder(leftProps);
   node.right = constructBSTFromPreorder(rightProps);
