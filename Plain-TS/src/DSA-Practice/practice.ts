@@ -1,10 +1,23 @@
-type bstFromPreorder<T> = {
+type PrimitiveBSTFromPreorder<T> = {
+  mode: "primitive";
   preorder: T[];
   index: [number];
   lower: number;
   upper: number;
-  key?: keyof T;
 };
+
+type ReferenceBSTFromPreorder<T> = {
+  mode: "reference";
+  preorder: T[];
+  index: [number];
+  lower: number;
+  upper: number;
+  key: keyof T;
+};
+
+type BSTFromPreorderProps<T> =
+  | PrimitiveBSTFromPreorder<T>
+  | ReferenceBSTFromPreorder<T>;
 
 class NodeBST<T> {
   constructor(
@@ -14,7 +27,7 @@ class NodeBST<T> {
   ) {}
 }
 
-const comparator = function <T>(data: T, key?: keyof T) {
+const comparator = <T, K extends keyof T>(data: T, key?: K) => {
   if (key && typeof data[key] === "number") {
     return data[key] as number;
   }
@@ -22,60 +35,73 @@ const comparator = function <T>(data: T, key?: keyof T) {
   return Number(data);
 };
 
-const constructBSTFromPreorder = function <T>({
-  preorder,
-  index,
-  lower,
-  upper,
-  key,
-}: bstFromPreorder<T>) {
-  if (
-    index[0] === preorder.length ||
-    comparator(preorder[index[0]], key) < lower ||
-    comparator(preorder[index[0]], key) > upper
-  ) {
+const constructBSTFromPreorder = function <T>(props: BSTFromPreorderProps<T>) {
+  if (props.index[0] === props.preorder.length) {
     return null;
   }
 
-  const value = preorder[index[0]];
+  const value = props.preorder[props.index[0]];
 
-  index[0] = index[0] + 1;
+  const valueToCompare = comparator(
+    value,
+    props.mode === "reference" ? props.key : undefined
+  );
+
+  if (valueToCompare < props.lower || valueToCompare > props.upper) {
+    return null;
+  }
+
+  props.index[0] = props.index[0] + 1;
   const node = new NodeBST(value);
 
-  node.left = constructBSTFromPreorder({
-    preorder,
-    index,
-    lower,
-    upper: comparator(node.data, key),
-    key,
-  });
+  const leftProps =
+    props.mode === "primitive"
+      ? { ...props, upper: comparator(node.data, undefined) }
+      : {
+          ...props,
+          key: props.key,
+          upper: comparator(node.data, props.key),
+        };
 
-  node.right = constructBSTFromPreorder({
-    preorder,
-    index,
-    lower: comparator(node.data, key),
-    upper,
-    key,
-  });
+  const rightProps =
+    props.mode === "primitive"
+      ? ({
+          ...props,
+          lower: comparator(node.data, undefined),
+        } as PrimitiveBSTFromPreorder<T>)
+      : ({
+          ...props,
+          key: props.key,
+          lower: comparator(node.data, props.key),
+        } as ReferenceBSTFromPreorder<T>);
+
+  node.left = constructBSTFromPreorder(leftProps);
+  node.right = constructBSTFromPreorder(rightProps);
 
   return node;
 };
 
-type Person = {
-  firstName: string;
-  age: number;
-};
-
 export const init = () => {
-  //   const preorder = [10, 5, 1, 7, 40, 50];
-  const preorder: Person[] = [
-    { firstName: "raju", age: 25 },
-    { firstName: "john", age: 30 },
-    { firstName: "alice", age: 28 },
+  type PersonInfo = {
+    fullName: string;
+    age: number;
+    subject: "CSE" | "Math" | "EEE";
+    profession: "Teacher" | "Engineer";
+  };
+
+  const personPreorder: PersonInfo[] = [
+    { fullName: "Ra Ju", age: 25, subject: "CSE", profession: "Engineer" },
+    { fullName: "Max Miller", age: 22, subject: "EEE", profession: "Engineer" },
+    { fullName: "Mesut Ozil", age: 35, subject: "Math", profession: "Teacher" },
+    { fullName: "Jim Rohn", age: 28, subject: "CSE", profession: "Teacher" },
   ];
+
+  // const preorder = [10, 5, 1, 7, 40, 50];
+
   const index: [number] = [0];
   const root = constructBSTFromPreorder({
-    preorder,
+    mode: "reference",
+    preorder: personPreorder,
     index,
     lower: Number.MIN_VALUE,
     upper: Number.MAX_VALUE,
