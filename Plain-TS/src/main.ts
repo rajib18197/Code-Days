@@ -3,6 +3,10 @@
 // import { init } from "./web-framework";
 // init();
 
-import { init } from "./DSA-Practice/practice";
+import { init } from "./DSA-Practice/bst";
 
 init();
+
+// import { init } from "./DSA-Practice/practice";
+
+// init();
