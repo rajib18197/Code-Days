@@ -73,15 +73,119 @@ const inorderTraversal = function <T>(node: NodeBST<T> | null): T[] {
   return [...left, ...ans, ...right];
 };
 
-const merge2BST = function <T>(root1: NodeBST<T>, root2: NodeBST<T>) {};
+const merge2SortedArr = function <T>(arr1: T[], arr2: T[]) {
+  const mergedArr = [];
+  let i = 0;
+  let j = 0;
+  let k = 0;
+  while (i < arr1.length && j < arr2.length) {
+    if (arr1[i] < arr2[j]) {
+      mergedArr[k++] = arr1[i++];
+    } else {
+      mergedArr[k++] = arr2[j++];
+    }
+  }
+
+  while (i < arr1.length) {
+    mergedArr[k++] = arr1[i++];
+  }
+
+  while (j < arr2.length) {
+    mergedArr[k++] = arr2[j++];
+  }
+
+  return mergedArr;
+};
+
+const merge2BST = function <T>(
+  root1: NodeBST<T> | null,
+  root2: NodeBST<T> | null
+) {
+  //   const root1Ans = inorderTraversal(root1);
+  //   const root2Ans = inorderTraversal(root2);
+  //   const ans = merge2SortedArr(root1Ans, root2Ans);
+  //   console.log(ans);
+  //   return ans;
+  if (root1 === null || root2 === null) {
+    return;
+  }
+
+  const stack1: NodeBST<T>[] = [];
+  const stack2: NodeBST<T>[] = [];
+
+  while (root1) {
+    stack1.push(root1);
+    root1 = root1.left;
+  }
+
+  while (root2) {
+    stack2.push(root2);
+    root2 = root2.left;
+  }
+
+  const ans: T[] = [];
+  let i = 0;
+  while (stack1.length !== 0 && stack2.length !== 0) {
+    const first = stack1[stack1.length - 1];
+    const second = stack2[stack2.length - 1];
+    if (first.data < second.data) {
+      ans[i++] = first.data;
+      stack1.pop();
+      let curr = first.right;
+      console.log(curr?.data);
+
+      while (curr !== null) {
+        stack1.push(curr);
+        curr = curr.left;
+      }
+    } else {
+      ans[i++] = second.data;
+      stack2.pop();
+      let curr = second.right;
+      console.log(curr?.data, 22);
+      while (curr !== null) {
+        stack2.push(curr);
+        curr = curr.left;
+      }
+    }
+  }
+
+  while (stack1.length !== 0) {
+    const first = stack1[stack1.length - 1];
+    ans[i++] = first.data;
+    stack1.pop();
+
+    let curr = first.right;
+    while (curr !== null) {
+      stack1.push(curr);
+      curr = curr.left;
+    }
+  }
+
+  while (stack2.length !== 0) {
+    const second = stack2[stack2.length - 1];
+    ans[i++] = second.data;
+    stack2.pop();
+
+    let curr = second.right;
+    while (curr !== null) {
+      stack2.push(curr);
+      curr = curr.right;
+    }
+  }
+
+  console.log(ans);
+};
 
 export const init = function () {
   const arr1 = [5, 3, 6, 2, 4];
   const arr2 = [2, 1, 3, 7, 6];
   const root1 = constructBST(arr1, { mode: "primitive" });
   const root2 = constructBST(arr2, { mode: "primitive" });
-  console.log(root1);
-  console.log(root2);
+  // console.log(root1);
+  // console.log(root2);
+  merge2BST(root1, root2);
+  //   [1, 2, 2, 3, 3, 4, 5, 6, 6, 7]
 
   //   const arr = [16, 27, 6, 5, 45, 33, 65, 1];
   //   const root = constructBST(arr, { mode: "primitive" });
