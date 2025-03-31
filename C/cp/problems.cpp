@@ -254,25 +254,81 @@ int main(){
 
     // cout << ans;
 
-    int n, p, q, r, s, num;
-    cin >> n >> p >> q >> r >> s;
-    int arr[n];
-    for(int i = 0; i < n; i++){
-        cin >> num;
-        arr[i] = num;
-    }
+    // int n, p, q, r, s, num;
+    // cin >> n >> p >> q >> r >> s;
+    // int arr[n];
+    // for(int i = 0; i < n; i++){
+    //     cin >> num;
+    //     arr[i] = num;
+    // }
 
-    int i = p - 1, j = r - 1;
-    while(i < q && j < s){
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-        i++;
-        j++;
-    }
-    for(int i = 0; i < n; i++){
-        cout << arr[i] << " ";
-    }
+    // int i = p - 1, j = r - 1;
+    // while(i < q && j < s){
+    //     int temp = arr[i];
+    //     arr[i] = arr[j];
+    //     arr[j] = temp;
+    //     i++;
+    //     j++;
+    // }
+    // for(int i = 0; i < n; i++){
+    //     cout << arr[i] << " ";
+    // }
 
+    // int n, m;
+    // cin >> n >> m;
+    // int a = -1, b = -1;
+    // int i = n;
+    // while(true){
+    //     if(a == -1){
+    //         int digit = i;
+    //         int sum = 0;
+    //         while(digit > 0){
+    //             int rem = digit % 10;
+    //             sum += rem;
+    //             digit = digit / 10;
+    //         }
+    //         if(sum >= n){
+    //             a = sum;
+    //         }
+    //     }else if(b == -1){
+    //         int digit = i;
+    //         int sum = 0;
+    //         while(digit > 0){
+    //             int rem = digit % 10;
+    //             sum += rem;
+    //             digit = digit / 10;
+    //         }
+    //         if(sum >= 0){
+    //             b = sum;
+    //         }
+    //     }else{
+    //         int digit = a + b;
+    //         int sum = 0;
+    //         while(digit > 0){
+    //             int rem = digit % 10;
+    //             sum += rem;
+    //             digit = digit / 10;
+    //         }
+
+    //         if(sum <= m){
+    //             cout << sum << endl; 
+    //             cout << a << endl; 
+    //             cout << b << endl; 
+    //             break;
+    //         }else{
+    //             a = -1;
+    //             b = -1;
+    //         }
+    //     }
+    //     i++;
+    // }
+
+    int n, m;
+    cin >> n >> m;
+    string a = "4" + string(2229, '9');  
+    string b = to_string(n - 1) + string(2228, '0') + "1";
+    cout << a << endl;
+    cout << b << endl;
+   
     return 0;
 }
