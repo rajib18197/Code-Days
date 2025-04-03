@@ -151,81 +151,98 @@
 // }
 
 
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// struct SegmentTree {
+//     vector<long long> tree;
+//     int n;
+
+//     SegmentTree(vector<long long>& arr) {
+//         n = arr.size();
+//         tree.resize(4 * n);
+//         build(0, 0, n - 1, arr);
+//     }
+
+//     void build(int node, int start, int end, vector<long long>& arr) {
+//         if (start == end) {
+//             tree[node] = arr[start];
+//         } else {
+//             int mid = (start + end) / 2;
+//             build(2 * node + 1, start, mid, arr);
+//             build(2 * node + 2, mid + 1, end, arr);
+//             tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
+//         }
+//     }
+
+//     long long range_sum(int node, int start, int end, int l, int r) {
+//         if (r < start || end < l) return 0;
+//         if (l <= start && end <= r) return tree[node];
+//         int mid = (start + end) / 2;
+//         return range_sum(2 * node + 1, start, mid, l, r) +
+//                range_sum(2 * node + 2, mid + 1, end, l, r);
+//     }
+
+//     int count_valid_positions(long long x) {
+//         int count = 0;
+//         for (int l = 0; l < n; l++) {
+//             int low = l, high = n - 1, pos = -1;
+//             while (low <= high) {
+//                 int mid = (low + high) / 2;
+//                 if (range_sum(0, 0, n - 1, l, mid) >= x) {
+//                     pos = mid;
+//                     high = mid - 1;
+//                 } else {
+//                     low = mid + 1;
+//                 }
+//             }
+//             if (pos != -1) count++;
+//         }
+//         return count;
+//     }
+// };
+
+
+// int main(){
+//     // int n, k;
+//     // long long x;
+//     // cin >> n >> k >> x;
+//     // int a[n];
+//     // long long b[n * k];
+
+//     int n, k;
+//     long long x;
+//     cin >> n >> k >> x;
+
+//     vector<long long> a(n);
+//     vector<long long> b(n * k);
+
+//     for(int i = 0; i < n; i++){
+//         cin >> a[i];
+//         b[i] = a[i];
+//     }
+
+//     for(int i = n; i < n * k; i++){
+//         b[i] = b[i - n];
+//     }
+//     SegmentTree segTree(b);
+//     cout << segTree.count_valid_positions(x) << endl;
+//     return 0;
+// }
+
 #include <bits/stdc++.h>
 using namespace std;
 
-struct SegmentTree {
-    vector<long long> tree;
-    int n;
-
-    SegmentTree(vector<long long>& arr) {
-        n = arr.size();
-        tree.resize(4 * n);
-        build(0, 0, n - 1, arr);
-    }
-
-    void build(int node, int start, int end, vector<long long>& arr) {
-        if (start == end) {
-            tree[node] = arr[start];
-        } else {
-            int mid = (start + end) / 2;
-            build(2 * node + 1, start, mid, arr);
-            build(2 * node + 2, mid + 1, end, arr);
-            tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
-        }
-    }
-
-    long long range_sum(int node, int start, int end, int l, int r) {
-        if (r < start || end < l) return 0;
-        if (l <= start && end <= r) return tree[node];
-        int mid = (start + end) / 2;
-        return range_sum(2 * node + 1, start, mid, l, r) +
-               range_sum(2 * node + 2, mid + 1, end, l, r);
-    }
-
-    int count_valid_positions(long long x) {
-        int count = 0;
-        for (int l = 0; l < n; l++) {
-            int low = l, high = n - 1, pos = -1;
-            while (low <= high) {
-                int mid = (low + high) / 2;
-                if (range_sum(0, 0, n - 1, l, mid) >= x) {
-                    pos = mid;
-                    high = mid - 1;
-                } else {
-                    low = mid + 1;
-                }
-            }
-            if (pos != -1) count++;
-        }
-        return count;
-    }
-};
-
-
 int main(){
-    // int n, k;
-    // long long x;
-    // cin >> n >> k >> x;
-    // int a[n];
-    // long long b[n * k];
-
-    int n, k;
-    long long x;
-    cin >> n >> k >> x;
-
-    vector<long long> a(n);
-    vector<long long> b(n * k);
-
-    for(int i = 0; i < n; i++){
-        cin >> a[i];
-        b[i] = a[i];
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        for(int i = 2; i <= n + 1; i++){
+            cout << i << " ";
+        }
+        cout << endl;
     }
-
-    for(int i = n; i < n * k; i++){
-        b[i] = b[i - n];
-    }
-    SegmentTree segTree(b);
-    cout << segTree.count_valid_positions(x) << endl;
     return 0;
 }
