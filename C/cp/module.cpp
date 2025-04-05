@@ -230,19 +230,117 @@
 //     return 0;
 // }
 
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     int t;
+//     cin >> t;
+//     while(t--){
+//         int n;
+//         cin >> n;
+//         for(int i = 2; i <= n + 1; i++){
+//             cout << i << " ";
+//         }
+//         cout << endl;
+//     }
+//     return 0;
+// }
+
 #include <bits/stdc++.h>
 using namespace std;
 
 int main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        for(int i = 2; i <= n + 1; i++){
-            cout << i << " ";
-        }
-        cout << endl;
+    string s;
+    cin >> s;
+
+    int firstIndex = 0;
+    int lastIndex = s.size() - 1;
+
+    int arr[26] = {0};
+
+    for(int i = 0; i < s.size(); i++){
+        arr[s[i] - 65]++;
     }
+
+    multimap<int, char, greater<int> >mapCount;
+
+    for(int i = 0; i < 26; i++){
+        if(arr[i] == 0) {
+            continue;
+        }
+        char ch = i + 65;
+        mapCount.insert({arr[i], ch});
+    }
+
+    char palindrome[s.size() + 1];
+
+    for(int i = 0; i < s.size(); i++){
+        palindrome[i] = '!';
+    }
+
+    palindrome[s.size()] = '\0';
+    
+    int count_of_one = 0;
+    int isPalidrome = 1;
+    char lastOdd;
+    
+    for(auto it : mapCount){
+        if(count_of_one == 1 && it.first % 2 == 1){
+            isPalidrome = 0;
+            lastOdd = it.second;
+            break;
+        }
+
+        if(it.first == 1){
+            palindrome[firstIndex++] = it.second;
+            lastIndex--;
+            count_of_one++;
+            lastOdd = it.second;
+            continue;
+        }
+
+        if(it.first == 2){
+            palindrome[firstIndex++] = it.second;
+            palindrome[lastIndex--] = it.second;
+            continue;
+        }
+
+        if(it.first % 2 == 1){
+            count_of_one++;
+            lastOdd = it.second;
+        }
+
+        int first = it.first / 2;
+
+        while(first--){
+            palindrome[firstIndex++] = it.second;
+        }
+        
+        int last = it.first / 2;
+
+        while(last--){
+            palindrome[lastIndex--] = it.second;
+        }
+    }
+    palindrome[s.size()] = '\0';
+
+    if(isPalidrome == 1){
+        for(int i = 0; i < s.size(); i++){
+            if(palindrome[i] == '!'){
+                palindrome[i] = lastOdd;
+                cout << palindrome[i];
+            }else{
+                cout << palindrome[i];
+            }
+        }
+    }else{
+        cout << "NO SOLUTION";
+    }
+
+    cout << endl;
+
     return 0;
 }
+
+    
