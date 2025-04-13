@@ -478,53 +478,551 @@
 //     return 0;
 // }
 
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     string s = "is2 an3 This1 apple4";
+//     vector<string> ans(10);
+//     string temp;
+//     int count = 0;
+//     for(int i = 0; i < s.size(); i++){
+//         if(s[i] == ' '){
+//             cout << temp << endl;
+//             int index = temp[temp.size() - 1] - '0';
+//             temp.pop_back();
+//             ans[index - 1] = temp;
+//             temp.clear();
+//             count++;
+//         }else{
+//             temp += s[i];
+//         }
+//     }
+//     if(temp.size() >= 1){
+//         int index = temp[temp.size() - 1] - '0';
+//         temp.pop_back();
+//         ans[index - 1] = temp;
+//         temp.clear();
+//         count++;
+//     }
+
+//     string str;
+//     for(int i = 0; i < count; i++){
+//         str += ans[i];
+//         if(i < count - 1){
+//             str += ' ';
+//         }else{
+//             str += '.';
+//         }
+//     }
+
+//     cout << str << endl;
+
+//     string firstName = "Jonas";
+//     string job = "teacher";
+//     int birthYear = 1991;
+//     int year = 2037;
+
+//     string sentence = "I'm " + firstName + ", a 30 "  + "year old " + job + '!';
+
+//     cout << sentence << endl;
+//     return 0;
+// }
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     int t;
+//     cin >> t;
+    
+//     while(t--){
+//         char arr[10][10];
+
+//         for(int i = 0; i < 10; i++){
+//             for(int j = 0; j < 10; j++){
+//                 cin >> arr[i][j];
+//             }
+//         }
+
+//         int points = 0;
+//         int ans[10][10];
+
+//         for(int i = 0; i < 5; i++){    
+//             for(int j = i; j < 10 - i; j++){      
+//                 ans[i][j] = i + 1;
+//             }
+
+//             for(int j = i; j < 10 - i; j++){      
+//                 ans[j][i] = i + 1;
+//             }
+
+//             for(int j = i; j < 10 - i; j++){      
+//                 ans[j][9 - i] = i + 1;
+//             }
+
+//             for(int j = i; j < 10 - i; j++){      
+//                 ans[9 - i][j] = i + 1;
+//             }
+//         }
+
+//         for(int i = 0; i < 10; i++){
+//             for(int j = 0; j < 10; j++){
+//                 if(arr[i][j] == 'X'){
+//                     points += ans[i][j];
+//                 }
+//             }
+//         }
+//         cout << points << endl;
+//     }
+//     return 0;   
+// }
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     int t;
+//     cin >> t;
+//     while(t--){
+//         char s[4];
+//         cin >> s;
+//         int isCorrect = 1;
+
+//         for(int i = 0; i < 3; i++){
+//             if(i == 0 && (s[i] == 'Y' || s[i] == 'y')){
+//                 continue;
+//             }else if(i == 1 && (s[i] == 'E' || s[i] == 'e')){
+//                 continue;
+//             } else if(i == 2 && (s[i] == 'S' || s[i] == 's')){
+//                 continue;
+//             }else{
+//                 isCorrect = 0;
+//                 break;
+//             }
+//         }
+
+//         if(isCorrect == 1){
+//             cout << "YES" << endl;
+//         }else{
+//             cout << "NO" << endl;
+//         }
+//     }
+//     return 0;
+// }
+
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     char s[101];
+//     int i;
+//     for(i = 0; i < 100; i++){
+//         int ch = getchar();
+
+//         if(ch == '\n'){
+//             break;
+//         }
+
+//         s[i] = ch;
+//     }
+
+//     s[i - 1] = '4';
+//     s[i] = '\0';
+
+//     cout << s << endl;
+//     return 0;
+// }
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     char s[101];
+//     int i;
+//     for(i = 0; i < 100; i++){
+//         int ch = getchar();
+
+//         if(ch == '\n'){
+//             break;
+//         }
+
+//         s[i] = ch;
+//     }
+    
+//     s[i] = '\0';
+    
+//     char modified_s[202];
+//     int k = 0;
+//     for(int j = 0; j < i; j++){
+//         modified_s[k] = s[j];
+//         modified_s[k + 1] = 32;
+//         k += 2;
+//         // cout << s[j] << " ";
+//     }
+
+//     cout << modified_s << endl;
+
+//     return 0;
+// }
+
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     int t;
+//     cin >> t;
+
+//     while(t--){
+//         char s[4];
+//         cin >> s;
+        
+//         int operations_needed = 0;
+
+//         for(int i = 0; i < 3; i++){
+//             if(s[i] - 97 != i){
+//                 operations_needed++;
+//             }
+//         }
+
+//         if(operations_needed <= 2){
+//             cout << "YES" << endl;
+//         }else{
+//             cout << "NO" << endl;
+//         }
+//     }
+
+//     return 0;
+// }
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     int t;
+//     cin >> t;
+
+//     while(t--){
+//         char grid[3][4];
+        
+//         for(int row = 0; row < 3; row++){
+//             for(int col = 0; col < 3; col++){
+//                 cin >> grid[row][col];
+//             }
+//         }
+        
+//         char replaceChar;
+
+//         for(int row = 0; row < 3; row++){
+//             int hash[3] = {0};
+            
+//             for(int col = 0; col < 3; col++){
+//                 hash[grid[row][col] - 65]++;
+//             }
+
+//             for(int i = 0; i < 3; i++){
+//                 if(hash[i] == 0){
+//                     replaceChar = 65 + i;
+//                     break;
+//                 }
+//             }
+//         }
+
+//         cout << replaceChar << endl;
+//     }
+//     return 0;
+// }
+
+// #include <bits/stdc++.h>
+
+// using namespace std;
+
+// int main(){
+//     char s[17];
+//     cin >> s;
+//     int isCorrect = 1;
+//     for(int i = 2; i <= 16; i+= 2){
+//         if(s[i - 1] != '0'){
+//             isCorrect = 0;
+//             break;
+//         }
+//     }
+
+//     if(isCorrect == 1){
+//         cout << "Yes" << endl;
+//     }else{
+//         cout << "No" << endl;
+//     }
+
+//     return 0;
+// }
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     int n;
+//     cin >> n;
+//     int lastDigit = -1;
+
+//     while(n > 0){
+//         int rem = n % 10;
+//         if(lastDigit == -1){
+//             lastDigit = rem;
+//         }else if(lastDigit < rem){
+//             lastDigit = rem;
+//         }else{
+//             lastDigit = -2;
+//             break;
+//         }
+//         n = n / 10;
+//     }
+
+//     if(lastDigit == -2){
+//         cout << "No" << endl;
+//     }else{
+//         cout << "Yes" << endl;
+//     }
+
+//     return 0;
+// }
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     char n[100];
+//     cin >> n;
+//     int len = strlen(n);
+//     int k = 0;
+    
+//     for(int i = 0; i < len; i++){
+//         int digit = n[i] - '0';
+        
+//         if(digit <= 5){
+//             if(digit == 0){
+//                 digit = 9;
+//             }else{
+//                 digit = 10 - digit;
+//             }
+//             n[i] = '0' + digit;
+//             k++;
+//             break;
+//         }
+//     }
+
+//     if(k == 0){
+//         for(int i = len - 1; i >= 0; i--){
+//             int digit = n[i] - '0';
+//             n[i] = '0' + (10 - digit);
+//             k++;
+//             break;
+//         }
+//     }
+
+//     cout << n << endl;
+
+//     return 0;
+// }
+
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// enum class Color {
+//     UNCOLORED = -1,
+//     COLORED_A = 0,
+//     COLORED_B = 1,
+// }
+
+// bool isBipartiteGraphBFS(int startingNode, vector<vector<int>>& adj,
+//                              vector<Color>& colors) {
+//     queue<int> q;
+//     q.push(startingNode);
+//     colors[startingNode] = Color::COLORED_A;
+
+//     while (!q.empty()) {
+//         int node = q.front();
+//         q.pop();
+
+//         for (int i = 0; i < adj[node].size(); i++) {
+//             int neighbourNode = adj[node][i];
+//             if (colors[neighbourNode] == Color::UNCOLORED) {
+//                 colors[neighbourNode] = colors[node] == Color::COLORED_B
+//                                             ? Color::COLORED_A
+//                                             : Color::COLORED_B;
+//                 q.push(neighbourNode);
+//             } else {
+//                 if (colors[neighbourNode] == colors[node]) {
+//                     return 0;
+//                 }
+//             }
+//         }
+//     }
+
+//     return 1;
+// }
+
+// int main(){
+//     vector<vector<int> adj = {{1,2,3},{0,2},{0,1,3},{0,2}};
+//     vector<Color> colors(adj.size(), Color::UNCOLORED);
+    
+//     bool isBipartite = 1;
+
+//     for(int i = 0; i < adj.size(); i++){
+//         if(colors[i] == Color::UNCOLORED){
+//             bool isBipartiteGraph = isBipartiteGraphBFS(i, adj, colors);
+//             if(!isBipartiteGraph) {
+//                 isBipartite = 0;
+//                 break;
+//             }
+//         }
+//     }
+
+//     if(!isBipartite){
+//         cout << "Graph is not bipartite" << endl;
+//     }else{
+//         cout << "Graph is a bipartite" << endl;
+//     }
+//     return 1;
+// }
+
+// #include <stdio.h>
+// #include <stdlib.h>
+
+// int main() {
+//     const char *sourceString = "Manual String";
+//     int length = 0;
+
+//     // Calculate the length of the source string
+//     while (sourceString[length] != '\0') {
+//         length++;
+//     }
+
+//     // Allocate memory on the heap (length + 1 for the null terminator)
+//     char *heapCharArray = (char *)malloc(sizeof(char) * (length + 1));
+
+//     if (heapCharArray == NULL) {
+//         fprintf(stderr, "Memory allocation failed!\n");
+//         return 1;
+//     }
+
+//     // Manually copy the characters from sourceString to heapCharArray
+//     for (int i = 0; i < length; i++) {
+//         heapCharArray[i] = sourceString[i];
+//     }
+
+//     // Add the null terminator at the end
+//     heapCharArray[length] = '\0';
+
+//     printf("String in heap: %s\n", heapCharArray);
+
+//     // Modify the string in the heap
+//     if (length > 0) {
+//         heapCharArray[0] = 'j';
+//     }
+//     printf("Modified string in heap: %s\n", heapCharArray);
+
+//     // Free the allocated memory
+//     free(heapCharArray);
+//     heapCharArray = NULL;
+
+//     return 0;
+// }
+
+
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     int t;
+//     cin >> t;
+//     cin.ignore();
+
+//     while(t--){
+//         string str;
+
+//         getline(cin, str);
+
+//         vector<string> arr;
+//         string word;
+//         for(int i = 0; i < str.length(); i++){
+//             if(str[i] == 32){
+//                 arr.push_back(word);
+//                 word.erase();
+//             }else{
+//                 word += str[i];
+//             }
+//         }
+
+//         string ans;
+//         arr.push_back(word);
+//         word.erase();
+
+//         for(int i = 0; i < arr.size(); i++){
+//             ans+= arr[i][0];
+//         }
+
+//         cout << ans << endl;
+//     }
+// }
+
+
 #include <bits/stdc++.h>
 using namespace std;
 
 int main(){
-    string s = "is2 an3 This1 apple4";
-    vector<string> ans(10);
-    string temp;
-    int count = 0;
-    for(int i = 0; i < s.size(); i++){
-        if(s[i] == ' '){
-            cout << temp << endl;
-            int index = temp[temp.size() - 1] - '0';
-            temp.pop_back();
-            ans[index - 1] = temp;
-            temp.clear();
-            count++;
-        }else{
-            temp += s[i];
+    int t;
+    cin >> t;
+
+    while(t--){
+        int n;
+        cin >> n;
+        vector<int> nums;
+        map<int, int> freq;
+        int max = -9999;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                int a;
+                cin >> a;
+                if(a > max){
+                    max = a;
+                }
+
+                if(freq.find(a) != freq.end()){
+                    continue;
+                }else{
+                    nums.push_back(a);
+                    freq.insert({a, 1});
+                }
+            }
         }
-    }
-    if(temp.size() >= 1){
-        int index = temp[temp.size() - 1] - '0';
-        temp.pop_back();
-        ans[index - 1] = temp;
-        temp.clear();
-        count++;
-    }
 
-    string str;
-    for(int i = 0; i < count; i++){
-        str += ans[i];
-        if(i < count - 1){
-            str += ' ';
-        }else{
-            str += '.';
+        int sum = 0;
+
+        for(int i = 0; i < nums.size(); i++){
+            sum += nums[i];
         }
+
+        int totalSum = 0;
+
+        for(int i = 1; i <= max; i++){
+            totalSum += i;
+        }
+
+        int absentNum = totalSum - sum;
+        if(absentNum == 0){
+            nums.insert(nums.begin(), max + 1);
+        }else{
+            nums.insert(nums.begin(), absentNum);   
+        }
+
+        for(int i = 0; i < nums.size(); i++){
+            cout << nums[i] << " ";
+        }
+
+        cout << endl;
     }
-
-    cout << str << endl;
-
-    string firstName = "Jonas";
-    string job = "teacher";
-    int birthYear = 1991;
-    int year = 2037;
-
-    string sentence = "I'm " + firstName + ", a 30 "  + "year old " + job + '!';
-
-    cout << sentence << endl;
-    return 0;
 }
