@@ -970,59 +970,111 @@
 // }
 
 
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     int t;
+//     cin >> t;
+
+//     while(t--){
+//         int n;
+//         cin >> n;
+//         vector<int> nums;
+//         map<int, int> freq;
+//         int max = -9999;
+//         for(int i = 0; i < n; i++){
+//             for(int j = 0; j < n; j++){
+//                 int a;
+//                 cin >> a;
+//                 if(a > max){
+//                     max = a;
+//                 }
+
+//                 if(freq.find(a) != freq.end()){
+//                     continue;
+//                 }else{
+//                     nums.push_back(a);
+//                     freq.insert({a, 1});
+//                 }
+//             }
+//         }
+
+//         int sum = 0;
+
+//         for(int i = 0; i < nums.size(); i++){
+//             sum += nums[i];
+//         }
+
+//         int totalSum = 0;
+
+//         for(int i = 1; i <= max; i++){
+//             totalSum += i;
+//         }
+
+//         int absentNum = totalSum - sum;
+//         if(absentNum == 0){
+//             nums.insert(nums.begin(), max + 1);
+//         }else{
+//             nums.insert(nums.begin(), absentNum);   
+//         }
+
+//         for(int i = 0; i < nums.size(); i++){
+//             cout << nums[i] << " ";
+//         }
+
+//         cout << endl;
+//     }
+// }
+
 #include <bits/stdc++.h>
 using namespace std;
 
 int main(){
-    int t;
-    cin >> t;
+    int m;
+    cin >> m;
 
-    while(t--){
+    while(m--){
         int n;
         cin >> n;
-        vector<int> nums;
-        map<int, int> freq;
-        int max = -9999;
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                int a;
-                cin >> a;
-                if(a > max){
-                    max = a;
-                }
 
-                if(freq.find(a) != freq.end()){
-                    continue;
-                }else{
-                    nums.push_back(a);
-                    freq.insert({a, 1});
-                }
+        vector<int> arr;
+
+        for(int i = 0; i < n; i++){
+            int num;
+            cin >> num;
+            arr.push_back(num);
+        }
+
+        vector<int> maxElements;
+        maxElements.push_back(arr[0]);
+
+        for(int i = 1; i < n; i++){
+            if(arr[i] < maxElements[i - 1]){
+                maxElements.push_back(maxElements[i - 1]);
+            }else{
+                maxElements.push_back(arr[i]);
             }
         }
 
-        int sum = 0;
+        int k = 1;
+        long long prefixSum = 0;
 
-        for(int i = 0; i < nums.size(); i++){
-            sum += nums[i];
-        }
 
-        int totalSum = 0;
+        for(int i = n - 1; i >= 0; i--){
+            if(k == 1){
+                cout << maxElements[n - 1] << " ";
+            }else{
+                prefixSum += arr[i + 1];
+                long long value = maxElements[n - k] + prefixSum;
+                cout << value  << " ";
+            }
 
-        for(int i = 1; i <= max; i++){
-            totalSum += i;
-        }
-
-        int absentNum = totalSum - sum;
-        if(absentNum == 0){
-            nums.insert(nums.begin(), max + 1);
-        }else{
-            nums.insert(nums.begin(), absentNum);   
-        }
-
-        for(int i = 0; i < nums.size(); i++){
-            cout << nums[i] << " ";
+            k++;
         }
 
         cout << endl;
     }
+
+    return 0;
 }
