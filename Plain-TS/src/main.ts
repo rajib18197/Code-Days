@@ -3,9 +3,9 @@
 // import { init } from "./web-framework";
 // init();
 
-import { init } from "./DSA-Practice/bst";
+// import { init } from "./DSA-Practice/bst";
 
-init();
+// init();
 
 // import { init } from "./DSA-Practice/practice";
 

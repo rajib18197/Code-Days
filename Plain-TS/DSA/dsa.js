@@ -470,32 +470,319 @@
 // console.log(hashTable.entries());
 // console.log(hashTable.table);
 
-const arr = [13, 5, 10, 14, 8, 15, 13];
-const maxElement = [13];
+// const arr = [13, 5, 10, 14, 8, 15, 13];
+// const maxElement = [13];
 
-for (let i = 1; i < arr.length; i++) {
-  if (arr[i] < maxElement[i - 1]) {
-    maxElement[i] = maxElement[i - 1];
-  } else {
-    maxElement[i] = arr[i];
+// for (let i = 1; i < arr.length; i++) {
+//   if (arr[i] < maxElement[i - 1]) {
+//     maxElement[i] = maxElement[i - 1];
+//   } else {
+//     maxElement[i] = arr[i];
+//   }
+// }
+
+// let k = 1;
+// const ans = [];
+// let sum = 0;
+
+// for (let i = arr.length - 1; i >= 0; i--) {
+//   if (k == 1) {
+//     ans.push(maxElement[maxElement.length - 1]);
+//     k++;
+//   } else {
+//     sum += arr[i + 1];
+//     const tempSum = maxElement[maxElement.length - k] + sum;
+//     ans.push(tempSum);
+//     k++;
+//   }
+// }
+
+// console.log(maxElement);
+// console.log(ans);
+
+// Alice and Bob are playing a game. They have n
+//  cards numbered from 1
+//  to n
+// . At the beginning of the game, some of these cards are given to Alice, and the rest are given to Bob.
+
+// Card with number i
+//  beats card with number j
+//  if and only if i>j
+// , with one exception: card 1
+//  beats card n
+// .
+
+// The game continues as long as each player has at least one card. During each turn, the following occurs:
+
+// Alice chooses one of her cards and places it face up on the table;
+// Bob, seeing Alice's card, chooses one of his cards and places it face up on the table;
+// if Alice's card beats Bob's card, both cards are taken by Alice. Otherwise, both cards are taken by Bob.
+// A player can use a card that they have taken during one of the previous turns.
+
+// The player who has no cards at the beginning of a turn loses. Determine who will win if both players play optimally.
+
+// Input
+// The first line contains a single integer t
+//  (1≤t≤5000
+// ) — the number of test cases.
+
+// Each test case consists of two lines:
+
+// the first line contains a single integer n
+//  (2≤n≤50
+// ) — the number of cards;
+// the second line contains n
+//  characters, each either A or B. If the i
+// -th character is A, then card number i
+//  is initially given to Alice; otherwise, it is given to Bob.
+// Additional constraint on the input: in each test case, at least one card is initially given to Alice, and at least one card is initially given to Bob.
+
+// Output
+// For each test case, output Alice if Alice wins with optimal play, or Bob if Bob wins. It can be shown that if both players play optimally, the game will definitely end in a finite number of turns with one of the players winning.
+
+// Example
+// InputCopy
+// 8
+// 2
+// AB
+// 2
+// BA
+// 4
+// ABAB
+// 4
+// BABA
+// 3
+// BAA
+// 5
+// AAAAB
+// 5
+// BAAAB
+// 6
+// BBBAAA
+// OutputCopy
+// Alice
+// Bob
+// Bob
+// Bob
+// Alice
+// Alice
+// Bob
+// Alice
+// Note
+// In the first test case, Alice has only one card, and Bob has only one card. Since Alice's card beats Bob's card, she wins after the first turn.
+
+// In the second test case, Alice has only one card, and Bob has only one card. Since Bob's card beats Alice's card, he wins after the first turn.
+
+// In the third test case, there are two possible game scenarios:
+
+// if Alice plays the card 1
+//  on the first turn, Bob can respond with the card 2
+//  and take both cards. Then, Alice has to play the card 3
+//  on the second turn, and Bob will respond by playing the card 4
+// . Then, he wins;
+// if Alice plays the card 3
+//  on the first turn, Bob can respond with the card 4
+//  and take both cards. Then, Alice has to play the card 1
+// , and Bob can respond either with the card 2
+//  or the card 3
+// . Then, he wins.
+// In the fourth test case, there are two possible game scenarios:
+
+// if Alice plays the card 2
+//  on the first turn, Bob can respond with the card 3
+//  and take both cards. Then, Alice has to play the card 4
+//  on the second turn, and Bob will respond by playing the card 1
+// . Then, he wins;
+// if Alice plays the card 4
+//  on the first turn, Bob can respond with the card 1
+//  and take both cards. Then, Alice has to play the card 2
+// , and Bob can respond either with the card 3
+//  or the card 4
+// . Then, he wins.
+
+class PriorityQueue {
+  constructor(totalLength, comparator) {
+    this.arr = Array.from({ length: totalLength }, () => []);
+    this.totalLength = totalLength;
+    this.comparator = comparator;
+    this.curr = 0;
+  }
+
+  top() {
+    if (this.curr === 0) return undefined;
+    return this.arr[0];
+  }
+
+  push(value) {
+    if (this.curr === this.totalLength) {
+      return;
+    }
+
+    this.arr[this.curr] = Array.isArray(value) ? [...value] : value;
+    let index = this.curr;
+    this.curr++;
+
+    let child = index;
+    let parent = Math.floor((child - 1) / 2);
+
+    // this.arr[parent][0] > this.arr[child][0]
+    while (parent >= 0 && this.comparator(this.arr, parent, child)) {
+      let temp = this.arr[child];
+      this.arr[child] = this.arr[parent];
+      this.arr[parent] = temp;
+
+      child = parent;
+      parent = Math.floor((child - 1) / 2);
+    }
+  }
+
+  remove() {
+    if (this.curr === 0) {
+      return -1;
+    }
+
+    const removedValue = this.arr[0];
+
+    this.arr[0] = this.arr[this.curr - 1];
+    this.curr--;
+
+    if (this.curr === 0) {
+      return removedValue;
+    }
+
+    let index = 0;
+    let smallest = index;
+    let left = smallest * 2 + 1;
+    let right = smallest * 2 + 2;
+
+    //   (left < this.curr && this.arr[smallest][0] > this.arr[left][0]) ||
+    //   (right < this.curr && this.arr[smallest][0] > this.arr[right][0])
+    while (
+      (left < this.curr && this.comparator(this.arr, smallest, left)) ||
+      (right < this.curr && this.comparator(this.arr, smallest, right))
+    ) {
+      if (left < this.curr && this.comparator(this.arr, smallest, left)) {
+        smallest = left;
+      }
+
+      if (right < this.curr && this.comparator(this.arr, smallest, right)) {
+        smallest = right;
+      }
+
+      let temp = this.arr[smallest];
+      this.arr[smallest] = this.arr[index];
+      this.arr[index] = temp;
+
+      index = smallest;
+      left = smallest * 2 + 1;
+      right = smallest * 2 + 2;
+    }
+
+    return removedValue;
   }
 }
 
-let k = 1;
-const ans = [];
-let sum = 0;
+const calcWinner = function (str) {
+  let alice = new PriorityQueue(
+    str.length,
+    (arr, first, second) => arr[first] < arr[second]
+  );
 
-for (let i = arr.length - 1; i >= 0; i--) {
-  if (k == 1) {
-    ans.push(maxElement[maxElement.length - 1]);
-    k++;
-  } else {
-    sum += arr[i + 1];
-    const tempSum = maxElement[maxElement.length - k] + sum;
-    ans.push(tempSum);
-    k++;
+  let bob = new PriorityQueue(
+    str.length,
+    (arr, first, second) => arr[first] < arr[second]
+  );
+
+  const obj = {};
+
+  for (let i = 1; i <= str.length; i++) {
+    if (str[i - 1] === "A") {
+      alice.push(i);
+      if (i === 1) {
+        obj["one"] = "Alice";
+      }
+    } else {
+      bob.push(i);
+      if (i === 1) {
+        obj["one"] = "Bob";
+      }
+    }
   }
-}
 
-console.log(maxElement);
-console.log(ans);
+  const N = str.length;
+
+  while (alice.curr > 0 && bob.curr > 0) {
+    let first;
+
+    if (obj["one"] === "Alice") {
+      first = 1;
+    } else {
+      const el = alice.top();
+      alice.remove();
+      const num = alice.top();
+      first = num;
+      alice.push(el);
+    }
+
+    const second = bob.top();
+
+    if (second === N && first < second && obj["one"] === "Alice") {
+      // alice is smaller but he has 1
+      alice.push(second);
+      bob.remove();
+      // console.log("8888");
+    } else if (first === N && obj["one"] === "Bob") {
+      const el = alice.remove();
+      const num = alice.top();
+      // console.log("Possible or not!!!");
+
+      if (num && num > second) {
+        // alice win
+        alice.push(second);
+        alice.push(el);
+        bob.remove();
+        obj["one"] = "Alice";
+      } else {
+        // bob win
+        bob.push(first);
+      }
+    } else if (first === 1 && second === N) {
+      // console.log("9999");
+      // alice win
+      const el = bob.remove();
+      const num = bob.top();
+
+      if (num) {
+        // bob win
+        bob.push(first);
+        bob.push(el);
+        alice.remove();
+      } else {
+        alice.push(el);
+      }
+    } else if (first > second) {
+      // console.log("yh1tt1");
+
+      // alice win
+      alice.push(second);
+      bob.remove();
+    } else {
+      // console.log(first, second);
+      // bob win --- second > first
+      bob.push(first);
+      alice.remove();
+    }
+  }
+
+  console.log(alice.curr, bob.curr, alice.curr > bob.curr ? "Alice" : "Bob");
+};
+
+calcWinner("AB"); // alice
+calcWinner("BA"); // bob
+calcWinner("ABAB"); // bob
+calcWinner("BABA"); // bob
+calcWinner("BAAA"); // alice
+calcWinner("AAAAB"); // alice
+calcWinner("BAAAB"); // bob
+calcWinner("BBBAAA"); // alice
+calcWinner("ABABB"); // alice

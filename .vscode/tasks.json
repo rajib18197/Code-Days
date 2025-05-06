@@ -1,0 +1,42 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "compile and run",
+      "type": "shell",
+      "command": "cmd.exe",
+      "args": [
+        "/c",
+        "g++ -std=c++17 -o \"${fileBasenameNoExtension}\" \"${file}\" && \"${fileBasenameNoExtension}\" < input.txt > output.txt"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "options": {
+        "cwd": "${fileDirname}"
+      }
+    },
+    {
+      "label": "compile only",
+      "type": "shell",
+      "command": "g++",
+      "args": ["-std=c++17", "-o", "${fileBasenameNoExtension}", "${file}"],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${fileDirname}"
+      }
+    }
+  ]
+}

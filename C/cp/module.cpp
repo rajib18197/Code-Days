@@ -1027,54 +1027,118 @@
 //     }
 // }
 
+// #include <bits/stdc++.h>
+// using namespace std;
+
+// int main(){
+//     int m;
+//     cin >> m;
+
+//     while(m--){
+//         int n;
+//         cin >> n;
+
+//         vector<int> arr;
+
+//         for(int i = 0; i < n; i++){
+//             int num;
+//             cin >> num;
+//             arr.push_back(num);
+//         }
+
+//         vector<int> maxElements;
+//         maxElements.push_back(arr[0]);
+
+//         for(int i = 1; i < n; i++){
+//             if(arr[i] < maxElements[i - 1]){
+//                 maxElements.push_back(maxElements[i - 1]);
+//             }else{
+//                 maxElements.push_back(arr[i]);
+//             }
+//         }
+
+//         int k = 1;
+//         long long prefixSum = 0;
+
+
+//         for(int i = n - 1; i >= 0; i--){
+//             if(k == 1){
+//                 cout << maxElements[n - 1] << " ";
+//             }else{
+//                 prefixSum += arr[i + 1];
+//                 long long value = maxElements[n - k] + prefixSum;
+//                 cout << value  << " ";
+//             }
+
+//             k++;
+//         }
+
+//         cout << endl;
+//     }
+
+//     return 0;
+// }
+
 #include <bits/stdc++.h>
 using namespace std;
 
 int main(){
-    int m;
-    cin >> m;
+    int t;
+    cin >> t;
 
-    while(m--){
+    while(t--){
         int n;
         cin >> n;
+        string str;
+        cin >> str;
+        cin.ignore();
 
-        vector<int> arr;
+        // priority_queue<int> alice;
+        vector<int> bob;
+        vector<int> alice;
+        
+        int aliceHasOne; // 1 means true, 0 means false;
 
-        for(int i = 0; i < n; i++){
-            int num;
-            cin >> num;
-            arr.push_back(num);
-        }
-
-        vector<int> maxElements;
-        maxElements.push_back(arr[0]);
-
-        for(int i = 1; i < n; i++){
-            if(arr[i] < maxElements[i - 1]){
-                maxElements.push_back(maxElements[i - 1]);
+        for(int i = 1; i <= n; i++){
+            if(str[i - 1] == 'A'){
+                alice.push_back(i);
+                if(i == 1){
+                    aliceHasOne = 1;
+                }
             }else{
-                maxElements.push_back(arr[i]);
+                bob.push_back(i);
+                if(i == 1){
+                    aliceHasOne = 0;
+                }
             }
         }
 
-        int k = 1;
-        long long prefixSum = 0;
-
-
-        for(int i = n - 1; i >= 0; i--){
-            if(k == 1){
-                cout << maxElements[n - 1] << " ";
+        if(n == 2){
+            if(aliceHasOne == 1){
+                cout << "Alice" << endl;
             }else{
-                prefixSum += arr[i + 1];
-                long long value = maxElements[n - k] + prefixSum;
-                cout << value  << " ";
+                cout << "Bob" << endl; 
+            }
+        }else{
+            int sumAlice = 0;
+            int sumBob = 0;
+
+            for(int i = 0; i < alice.size(); i++){
+                sumAlice += alice[i];
             }
 
-            k++;
+            for(int i = 0; i < bob.size(); i++){
+                sumBob += bob[i];
+            }
+            cout << sumAlice << endl;
+            cout << sumBob << endl;
+            
+            if(sumAlice > sumBob){ 
+                cout << "Alice" << endl;
+            }else{
+                cout << "Bob" << endl; 
+            }
         }
-
-        cout << endl;
     }
-
     return 0;
-}
+} 
