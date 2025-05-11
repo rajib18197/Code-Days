@@ -81,5 +81,6 @@ int main(){
 	}
 
 	cout << count << '\n';
+	
 	return 0;
 }

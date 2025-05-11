@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Animated Weekly Meal Planner</title>
+    <style>
+      /* Reset & base */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 20px;
+        background: #f9fafb;
+        color: #333;
+      }
+      h1,
+      h2 {
+        margin-bottom: 12px;
+        font-weight: 700;
+        color: #222;
+      }
+
+      /* Container */
+      .container {
+        display: flex;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+      .recipes,
+      .calendar {
+        background: white;
+        box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        flex: 1 1 400px;
+        min-width: 320px;
+      }
+
+      /* Add Recipe Form */
+      #addRecipeForm {
+        margin-bottom: 25px;
+        display: flex;
+        gap: 12px;
+        max-width: 600px;
+      }
+      #newRecipeInput {
+        flex-grow: 1;
+        padding: 12px 14px;
+        font-size: 1rem;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        transition: border-color 0.3s ease;
+      }
+      #newRecipeInput:focus {
+        outline: none;
+        border-color: #3f51b5;
+        box-shadow: 0 0 6px #3f51b5aa;
+      }
+      #addRecipeBtn {
+        background-color: #3f51b5;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      #addRecipeBtn:hover {
+        background-color: #303f9f;
+      }
+
+      /* Recipe List */
+      #recipeList {
+        max-height: 480px;
+        overflow-y: auto;
+      }
+      .recipe-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        background: #f5f7ff;
+        box-shadow: inset 0 0 6px #e0e7ff;
+        transition: background-color 0.3s ease;
+        opacity: 0;
+        transform: translateX(-15px);
+        animation: slideFadeIn 0.4s forwards;
+      }
+      .recipe-item:nth-child(n) {
+        animation-delay: calc(0.1s * var(--i));
+      }
+      .recipe-item:hover {
+        background: #e8ebff;
+      }
+      .recipe-item label {
+        flex-grow: 1;
+        font-weight: 600;
+        font-size: 1rem;
+        user-select: none;
+      }
+      .recipe-item select {
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: 1.8px solid #ccc;
+        font-size: 0.95rem;
+        transition: border-color 0.3s ease;
+      }
+      .recipe-item select:hover,
+      .recipe-item select:focus {
+        border-color: #3f51b5;
+        outline: none;
+        box-shadow: 0 0 5px #3f51b5aa;
+      }
+      .recipe-item button {
+        background-color: #e53935;
+        border: none;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .recipe-item button:hover {
+        background-color: #b71c1c;
+      }
+
+      /* Calendar Scroll Wrapper */
+      .calendar-scroll-wrapper {
+        overflow-x: auto;
+        border-radius: 10px;
+        box-shadow: inset 0 0 10px #ddd;
+      }
+
+      /* Calendar Table */
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        min-width: 700px; /* Minimum width to avoid squishing */
+        box-shadow: 0 4px 14px rgb(0 0 0 / 0.1);
+        background: white;
+      }
+      thead tr {
+        background-color: #3f51b5;
+        color: white;
+        font-weight: 700;
+      }
+      th,
+      td {
+        padding: 14px 12px;
+        text-align: center;
+        vertical-align: top;
+        border-bottom: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        min-width: 110px;
+        word-wrap: break-word;
+      }
+      th:last-child,
+      td:last-child {
+        border-right: none;
+      }
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+      .day-cell {
+        min-height: 100px;
+        background-color: #fafbff;
+        transition: background-color 0.3s ease;
+        position: relative;
+      }
+      .day-cell.drag-over {
+        background-color: #c8dafc !important;
+        box-shadow: inset 0 0 10px #3f51b5aa;
+        animation: pulseBackground 0.8s ease infinite;
+      }
+
+      /* Assigned Recipe Pills */
+      .draggable {
+        background-color: #e3f2fd;
+        margin: 6px 0;
+        padding: 6px 10px;
+        border-radius: 20px;
+        cursor: grab;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        user-select: none;
+        box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeSlideUp 0.5s forwards;
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+      }
+      .draggable:active {
+        cursor: grabbing;
+      }
+      .draggable:hover {
+        box-shadow: 0 6px 14px rgb(63 81 181 / 0.3);
+        transform: scale(1.05);
+      }
+      .draggable button {
+        background-color: #ef5350;
+        border: none;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-weight: 700;
+        cursor: pointer;
+        line-height: 17px;
+        padding: 0;
+        margin-left: 10px;
+        transition: background-color 0.3s ease;
+      }
+      .draggable button:hover {
+        background-color: #b71c1c;
+      }
+
+      /* Print Button */
+      #printBtn {
+        margin-top: 20px;
+        padding: 12px 24px;
+        background-color: #3f51b5;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 4px 10px rgb(63 81 181 / 0.3);
+      }
+      #printBtn:hover {
+        background-color: #303f9f;
+      }
+
+      /* Scrollbar for recipe list */
+      #recipeList::-webkit-scrollbar {
+        width: 8px;
+      }
+      #recipeList::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+      #recipeList::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+      }
+      #recipeList::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .container {
+          flex-direction: column;
+        }
+        .recipes,
+        .calendar {
+          min-width: 100%;
+          max-width: 100%;
+        }
+      }
+
+      /* Print Styles */
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        .calendar,
+        .calendar * {
+          visibility: visible;
+        }
+        .calendar {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          padding: 0;
+          margin: 0;
+          box-shadow: none;
+          border-radius: 0;
+          background: white;
+          overflow-x: visible !important;
+        }
+        .calendar-scroll-wrapper {
+          overflow-x: visible !important;
+          box-shadow: none !important;
+        }
+        table {
+          box-shadow: none !important;
+          border: 1px solid #444 !important;
+          min-width: auto !important;
+          width: 100% !important;
+        }
+        th,
+        td {
+          border: 1px solid #444 !important;
+          padding: 10px !important;
+          font-size: 12pt !important;
+        }
+        #printBtn {
+          display: none !important;
+        }
+      }
+
+      /* Animations */
+      @keyframes slideFadeIn {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes fadeSlideUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes pulseBackground {
+        0%,
+        100% {
+          background-color: #c8dafc;
+        }
+        50% {
+          background-color: #a3c3fc;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Animated Weekly Meal Planner</h1>
+
+    <div id="addRecipeForm">
+      <input
+        type="text"
+        id="newRecipeInput"
+        placeholder="Add new recipe..."
+        aria-label="Add new recipe"
+      />
+      <button id="addRecipeBtn" aria-label="Add recipe">Add Recipe</button>
+    </div>
+
+    <div class="container" role="main">
+      <section class="recipes" aria-label="Recipe list">
+        <h2>Recipes</h2>
+        <div id="recipeList" tabindex="0"></div>
+      </section>
+
+      <section class="calendar" aria-label="Weekly meal calendar">
+        <h2>Weekly Calendar</h2>
+        <div
+          class="calendar-scroll-wrapper"
+          tabindex="0"
+          aria-label="Scrollable weekly meal plan table"
+        >
+          <table role="grid" aria-readonly="true" aria-label="Weekly meal plan">
+            <thead>
+              <tr id="calendarHeader"></tr>
+            </thead>
+            <tbody>
+              <tr id="calendarBody"></tr>
+            </tbody>
+          </table>
+        </div>
+        <button
+          id="printBtn"
+          title="Print Meal Plan"
+          aria-label="Print meal plan"
+        >
+          🖨️ Print Meal Plan
+        </button>
+      </section>
+    </div>
+
+    <script>
+      // --- Utility Functions ---
+      function saveToLocalStorage(key, data) {
+        localStorage.setItem(key, JSON.stringify(data));
+      }
+      function loadFromLocalStorage(key, defaultValue) {
+        const data = localStorage.getItem(key);
+        if (data) {
+          try {
+            return JSON.parse(data);
+          } catch {
+            return defaultValue;
+          }
+        }
+        return defaultValue;
+      }
+
+      // --- Data Management ---
+      let recipes = loadFromLocalStorage("recipes", [
+        "Spaghetti Bolognese",
+        "Chicken Caesar Salad",
+        "Vegetable Stir Fry",
+        "Beef Tacos",
+        "Grilled Salmon",
+        "Mushroom Risotto",
+        "Pancakes with Berries",
+      ]);
+
+      let assignments = loadFromLocalStorage("assignments", []);
+
+      // --- Date Helpers ---
+      function getNext7Days() {
+        const days = [];
+        const today = new Date();
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(today);
+          d.setDate(today.getDate() + i);
+          const dayName = d.toLocaleDateString(undefined, { weekday: "short" });
+          const dateNum = d.getDate();
+          days.push({ dateObj: d, label: `${dayName} ${dateNum}` });
+        }
+        console.log(days);
+        return days;
+      }
+      const days = getNext7Days();
+
+      // --- DOM Elements ---
+      const recipeListDiv = document.getElementById("recipeList");
+      const calendarHeaderRow = document.getElementById("calendarHeader");
+      const calendarBodyRow = document.getElementById("calendarBody");
+      const addRecipeBtn = document.getElementById("addRecipeBtn");
+      const newRecipeInput = document.getElementById("newRecipeInput");
+      const printBtn = document.getElementById("printBtn");
+
+      // --- Render Functions ---
+      function renderCalendarHeader() {
+        calendarHeaderRow.innerHTML = "";
+        days.forEach((day) => {
+          const th = document.createElement("th");
+          th.textContent = day.label;
+          calendarHeaderRow.appendChild(th);
+        });
+      }
+
+      function renderCalendarBody() {
+        calendarBodyRow.innerHTML = "";
+        days.forEach((day, dayIndex) => {
+          const td = document.createElement("td");
+          td.classList.add("day-cell");
+          td.dataset.dayIndex = dayIndex;
+          td.setAttribute("aria-label", `Meals for ${day.label}`);
+          td.addEventListener("dragover", onDragOver);
+          td.addEventListener("drop", onDrop);
+          td.addEventListener("dragleave", onDragLeave);
+          calendarBodyRow.appendChild(td);
+        });
+
+        assignments.forEach(({ recipeIndex, dayIndex }, assignIndex) => {
+          const cell = calendarBodyRow.children[dayIndex];
+          if (!cell) return;
+          const p = document.createElement("p");
+          p.textContent = recipes[recipeIndex];
+          p.className = "draggable";
+          p.draggable = true;
+          p.dataset.assignIndex = assignIndex;
+          p.title = "Drag to move or remove";
+          p.setAttribute("tabindex", "0");
+          p.style.animationDelay = `${assignIndex * 0.1}s`;
+          p.addEventListener("dragstart", onDragStart);
+          p.addEventListener("dragend", onDragEnd);
+
+          const removeBtn = document.createElement("button");
+          removeBtn.textContent = "✕";
+          removeBtn.title = "Remove this assignment";
+          removeBtn.setAttribute(
+            "aria-label",
+            `Remove ${recipes[recipeIndex]} from ${days[dayIndex].label}`
+          );
+          removeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            removeAssignment(assignIndex);
+          });
+
+          p.appendChild(removeBtn);
+          cell.appendChild(p);
+        });
+      }
+
+      function renderRecipes() {
+        recipeListDiv.innerHTML = "";
+        recipes.forEach((recipe, i) => {
+          const div = document.createElement("div");
+          div.className = "recipe-item";
+          div.style.setProperty("--i", i);
+
+          const label = document.createElement("label");
+          label.textContent = recipe;
+          label.setAttribute("for", "select-" + i);
+
+          const select = document.createElement("select");
+          select.id = "select-" + i;
+
+          const optionNone = document.createElement("option");
+          optionNone.value = "";
+          optionNone.textContent = "Unassigned";
+          select.appendChild(optionNone);
+
+          days.forEach((day, dayIndex) => {
+            const option = document.createElement("option");
+            option.value = dayIndex;
+            option.textContent = day.label;
+            select.appendChild(option);
+          });
+
+          const assigned = assignments.find((a) => a.recipeIndex === i);
+          select.value = assigned ? assigned.dayIndex : "";
+
+          select.addEventListener("change", () => {
+            const selectedDay =
+              select.value === "" ? null : Number(select.value);
+            updateAssignment(i, selectedDay);
+          });
+
+          const removeRecipeBtn = document.createElement("button");
+          removeRecipeBtn.textContent = "Remove";
+          removeRecipeBtn.title =
+            "Remove this recipe (and all its assignments)";
+          removeRecipeBtn.addEventListener("click", () => {
+            removeRecipe(i);
+          });
+
+          div.appendChild(label);
+          div.appendChild(select);
+          div.appendChild(removeRecipeBtn);
+
+          recipeListDiv.appendChild(div);
+        });
+      }
+
+      // --- Data Manipulation ---
+      function updateAssignment(recipeIndex, dayIndex) {
+        assignments = assignments.filter((a) => a.recipeIndex !== recipeIndex);
+        if (dayIndex !== null) {
+          assignments.push({ recipeIndex, dayIndex });
+        }
+        saveData();
+        renderCalendarBody();
+        renderRecipes();
+      }
+
+      function removeAssignment(assignIndex) {
+        assignments.splice(assignIndex, 1);
+        saveData();
+        renderCalendarBody();
+        renderRecipes();
+      }
+
+      function addRecipe(recipeName) {
+        if (!recipeName.trim()) {
+          alert("Recipe name cannot be empty.");
+          return;
+        }
+        recipes.push(recipeName.trim());
+        saveData();
+        renderRecipes();
+      }
+
+      function removeRecipe(recipeIndex) {
+        if (
+          !confirm(
+            `Remove recipe "${recipes[recipeIndex]}" and all its assignments?`
+          )
+        )
+          return;
+        recipes.splice(recipeIndex, 1);
+        assignments = assignments.filter((a) => a.recipeIndex !== recipeIndex);
+        assignments = assignments.map((a) => ({
+          recipeIndex:
+            a.recipeIndex > recipeIndex ? a.recipeIndex - 1 : a.recipeIndex,
+          dayIndex: a.dayIndex,
+        }));
+        saveData();
+        renderRecipes();
+        renderCalendarBody();
+      }
+
+      function saveData() {
+        saveToLocalStorage("recipes", recipes);
+        saveToLocalStorage("assignments", assignments);
+      }
+
+      // --- Drag and Drop ---
+      let draggedAssignIndex = null;
+
+      function onDragStart(e) {
+        draggedAssignIndex = Number(e.target.dataset.assignIndex);
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", draggedAssignIndex);
+        e.target.style.opacity = "0.5";
+      }
+      function onDragEnd(e) {
+        e.target.style.opacity = "1";
+        draggedAssignIndex = null;
+        clearDragOverStyles();
+      }
+      function onDragOver(e) {
+        e.preventDefault();
+        if (draggedAssignIndex === null) return;
+        e.currentTarget.classList.add("drag-over");
+        e.dataTransfer.dropEffect = "move";
+      }
+      function onDragLeave(e) {
+        e.currentTarget.classList.remove("drag-over");
+      }
+      function onDrop(e) {
+        e.preventDefault();
+        e.currentTarget.classList.remove("drag-over");
+        if (draggedAssignIndex === null) return;
+
+        const dayIndex = Number(e.currentTarget.dataset.dayIndex);
+        if (isNaN(dayIndex)) return;
+
+        assignments[draggedAssignIndex].dayIndex = dayIndex;
+        saveData();
+        renderCalendarBody();
+        renderRecipes();
+      }
+      function clearDragOverStyles() {
+        Array.from(calendarBodyRow.children).forEach((td) =>
+          td.classList.remove("drag-over")
+        );
+      }
+
+      // --- Print ---
+      printBtn.addEventListener("click", () => {
+        window.print();
+      });
+
+      // --- Add Recipe Handler ---
+      addRecipeBtn.addEventListener("click", () => {
+        const val = newRecipeInput.value;
+        if (val.trim()) {
+          addRecipe(val);
+          newRecipeInput.value = "";
+          newRecipeInput.focus();
+        }
+      });
+      newRecipeInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          addRecipeBtn.click();
+        }
+      });
+
+      // --- Initial Render ---
+      renderCalendarHeader();
+      renderCalendarBody();
+      renderRecipes();
+    </script>
+  </body>
+</html>
